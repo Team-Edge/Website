@@ -29,8 +29,8 @@ if (isset($_SESSION['login'])) {
 								'username'  => $row['username']
 							)
 						);
-						$message['success'] = 'Login erfolgreich, <a href="index.php">weiter zum Inhalt.';
-						header('Location: http://' . $_SERVER['HTTP_HOST'] . '/index.php');
+						$message['success'] = 'Login erfolgreich, <a href="./index.php">weiter zum Inhalt.';
+						header('Location: ./index.php');
 					} else {
 						$message['error'] = 'Passwort Falsch';
 					}
@@ -41,7 +41,7 @@ if (isset($_SESSION['login'])) {
 			}
 		}
 	} else {
-		$message['notice'] = 'Benutzerusername und password eingeben.<br />' .
+		$message['notice'] = 'Benutzername und Passwort eingeben.<br />' .
 			'Noch kein Account? <a href="index.php?click=register">Jetzt Registrieren!</a><br />' .
 			'Passwort vergessen? <a href="./newpw.php">Neu anfordern!</a>';
 	}
@@ -50,7 +50,7 @@ if (isset($_SESSION['login'])) {
 
 
 <h2>Loginseite</h2>
-<form username="form" action="./index.php?click=login" method="post">
+<form name="form" action="./index.php?click=login" method="post">
 
 <?php if (isset($message['error'])): ?>
 			<p class="error"><?php echo $message['error'] ?></p>
@@ -65,10 +65,10 @@ if (isset($_SESSION['login'])) {
 <table>
 <tr><td style="padding-right:30px;">
 <p><label for="username">Benutzername</label></td><td>
-					<input type="text" username="f[username]" id="username"<?php 
+					<input type="text" name="f[username]" id="username"<?php 
 					echo isset($_POST['f']['username']) ? ' value="' . htmlspecialchars($_POST['f']['username']) . '"' : '' ?> /></p></td></tr>
-				<tr><td style="padding-right:30px;"><p><label for="password">password</label></p></td><td><input type="password" username="f[password]" id="password" /></p></td></tr></table>
+				<tr><td style="padding-right:30px;"><p><label for="password">Passwort</label></p></td><td><input type="password" name="f[password]" id="password" /></p></td></tr></table>
 				
-<p><input type="submit" username="submit" value="Anmelden"></p>
+<p><input type="submit" name="submit" value="Anmelden"></p>
 
-</form>
+</form> 

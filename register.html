@@ -1,14 +1,15 @@
-<?php
+﻿<?php
 	$message = array();
 	if (!empty($_POST)) {
 		if (
 			empty($_POST['f']['username']) ||
+			empty($_POST['f']['mail']) ||
 			empty($_POST['f']['password']) ||
 			empty($_POST['f']['password_again'])
 		) {
-			$message['error'] = 'Es wurden nicht alle Felder ausgef�llt.';
+			$message['error'] = 'Es wurden nicht alle Felder ausgefüllt.';
 		} else if ($_POST['f']['password'] != $_POST['f']['password_again']) {
-			$message['error'] = 'Die eingegebenen Passw�rter stimmen nicht �berein.';
+			$message['error'] = 'Die eingegebenen Passwörter stimmen nicht überein.';
 		} else {
 			unset($_POST['f']['password_again']);
 			$salt = ''; 
@@ -26,53 +27,49 @@
 				$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 			}
 			$query = sprintf(
-				"INSERT INTO User (username, password)
-				SELECT * FROM (SELECT '%s', '%s') as new_user
+				"INSERT INTO User (username, E-Mail, password)
+				SELECT * FROM (SELECT '%s', '%s', '%s') as new_user
 				WHERE NOT EXISTS (
 					SELECT username FROM User WHERE username = '%s'
 				) LIMIT 1;",
 				$mysqli->real_escape_string($_POST['f']['username']),
+				$mysqli->real_escape_string($_POST['f']['mail']),
 				$mysqli->real_escape_string($_POST['f']['password']),
 				$mysqli->real_escape_string($_POST['f']['username'])
 			);
 			$mysqli->query($query);
 			if ($mysqli->affected_rows == 1) {
-				$message['success'] = 'Neuer Benutzer (' . htmlspecialchars($_POST['f']['username']) . ') wurde angelegt, <a href="login.php">weiter zur Anmeldung</a>.';
-				header('Location: http://' . $_SERVER['HTTP_HOST'] . '/login.php');
+				$message['success'] = 'Neuer Benutzer (' . htmlspecialchars($_POST['f']['username']) . ') wurde angelegt, <a href="index.php?click=login">weiter zur Anmeldung</a>.';
+				
 			} else {
-				$message['error'] = 'Der Benutzerusername ist bereits vergeben.';
+				$message['error'] = 'Der Benutzername ist bereits vergeben.';
 			}
 			$mysqli->close();
 		}
 	} else {
 		$message['notice'] = 'Übermitteln Sie das ausgefüllte Formular um ein neues Benutzerkonto zu erstellen.';
 	}
-?><!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<title>loginsystem - register.php</title>
-	</head>
-	<body>
-		<form action="index.php?click=register" method="post">
+?>
+<form name='form' action="index.php?click=register" method="post">
 <?php if (isset($message['error'])): ?>
-			<fieldset class="error"><legend>Fehler</legend><?php echo $message['error'] ?></fieldset>
+			<p class="error"><legend>Fehler</legend><?php echo $message['error'] ?></p>
 <?php endif;
 	if (isset($message['success'])): ?>
-			<fieldset class="success"><legend>Erfolg</legend><?php echo $message['success'] ?></fieldset>
+			<p class="success"><legend>Erfolg</legend><?php echo $message['success'] ?></p>
 <?php endif;
 	if (isset($message['notice'])): ?>
-			<fieldset class="notice"><legend>Hinweis</legend><?php echo $message['notice'] ?></fieldset>
+			<p class="notice"><legend>Hinweis</legend><?php echo $message['notice'] ?></p>
 <?php endif; ?>
-			<fieldset>
-				<legend>Benutzerdaten</legend>
-				<div><label for="username">Benutzerusername</label> <input type="text" username="f[username]" id="username"<?php echo isset($_POST['f']['username']) ? ' value="' . htmlspecialchars($_POST['f']['username']) . '"' : '' ?> /></div>
-				<div><label for="password">Kennwort</label> <input type="password" username="f[password]" id="password" /></div>
-				<div><label for="password_again">Kennwort wiederholen</label> <input type="password" username="f[password_again]" id="password_again" /></div>
-			</fieldset>
-			<fieldset>
-				<div><input type="submit" username="submit" value="Registrieren" /></div>
-			</fieldset>
+			
+			<p>
+			<table>
+				<tr><td><label for="username">Benutzername</label></td><td> <input type="text" name="f[username]" id="username"<?php echo isset($_POST['f']['username']) ? ' value="' . htmlspecialchars($_POST['f']['username']) . '"' : '' ?> /></td></tr>
+				<tr><td><label for="username">E-Mail</label></td><td> <input type="text" name="f[mail]" id="mail"/></td></tr>
+				<tr><td><label for="password">Kennwort</label></td><td> <input type="password" name="f[password]" id="password" /></td></tr>
+				<tr><td style="padding-right:30px;"><label for="password_again">Kennwort wiederholen</label></td><td> <input type="password" name="f[password_again]" id="password_again" /></td></tr>
+			</table>
+			</p>
+			<p>
+			<input type="submit" name="submit" value="Registrieren" />
+			</p>
 		</form>
-	</body>
-</html>

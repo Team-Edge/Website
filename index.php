@@ -60,7 +60,8 @@ $(".toggleMobile").removeClass("active");
     
    switch($_GET['click']){
      case 'login': include('login.html');break;  
-	 case 'register': include('register.html');break;  
+	 case 'register': include('register.html');break; 
+	case 'logout': include('logout.html');break; 
     
      default: include('inhalt.html');
    }  

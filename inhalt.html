@@ -1,2 +1,14 @@
-<h2>Wilkommen</h2>
+<h2>Wilkommen 
+<?php
+session_start();
+if(isset($_SESSION['login'])){
+echo $_SESSION['user']['username'];
+}
+?>
+</h2>
 <p>Kurze Beschreibung</p>
+<?php
+if(isset($_SESSION['login'])){
+echo "<p><a href=index.php?click=logout class=button>Logout</a></p>";
+}
+?> 
