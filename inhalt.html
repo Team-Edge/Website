@@ -5,20 +5,23 @@ if(isset($_SESSION['login'])){
 echo $_SESSION['user']['username'];
 echo "</h2>";
 
-#include("../../zugriff.php");
-#if ($mysqli->connect_error) {
-#	$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
-#}
+include("../../zugriff.php");
+if ($mysqli->connect_error) {
+$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+}
+$SQL="SELECT * FROM `CustomFeed`, `User` WHERE CustomFeed.`User-ID`=User.`ID` AND User.username='".$_SESSION['user']['username']."'";
+
 
 
 
 echo "
 <profiles>
 <ul>
-<a href='index.php?click=articles&profile=name1'><li>Profil 1</li></a>
-<a href='index.php?click=articles&profile=name2'><li>Profil 2</li></a>
-<a href='index.php?click=articles&profile=name3'><li>Profil 3</li></a>
-
+";
+foreach ($mysqli->query($SQL) as $row){
+echo "<a href='index.php?click=articles&profile=name1'><li>".$row['Name']."</li></a>";
+}
+echo "
 </ul>
 </profiles>
 ";
