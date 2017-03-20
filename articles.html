@@ -1,0 +1,18 @@
+<?php
+
+if(isset($_GET['profile'])){
+    
+   switch($_GET['profile']){
+     case 'name1': echo '<p>Artikel 1</p>';break;  
+	  case 'name2': echo '<p>Artikel 2</p>';break;  
+	   case 'name3': echo '<p>Artikel 3</p>';break;  
+	
+     default: include('inhalt.html');
+   }  
+   
+  
+  }      
+  else{
+  include('inhalt.html');    
+}
+?>
