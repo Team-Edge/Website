@@ -29,7 +29,7 @@ if (isset($_SESSION['login'])) {
 								'username'  => $row['username']
 							)
 						);
-						$message['success'] = 'Login erfolgreich, <a href="./index.php">weiter zum Inhalt.';
+						$message['success'] = 'Login erfolgreich, weiter zum Inhalt.';
 						header('Location: ./index.php');
 					} else {
 						$message['error'] = 'Passwort Falsch';

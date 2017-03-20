@@ -27,14 +27,14 @@
 				$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 			}
 			$query = sprintf(
-				"INSERT INTO User (username, E-Mail, password)
+				"INSERT INTO User (username, password, mail)
 				SELECT * FROM (SELECT '%s', '%s', '%s') as new_user
 				WHERE NOT EXISTS (
 					SELECT username FROM User WHERE username = '%s'
 				) LIMIT 1;",
 				$mysqli->real_escape_string($_POST['f']['username']),
-				$mysqli->real_escape_string($_POST['f']['mail']),
 				$mysqli->real_escape_string($_POST['f']['password']),
+				$mysqli->real_escape_string($_POST['f']['mail']),
 				$mysqli->real_escape_string($_POST['f']['username'])
 			);
 			$mysqli->query($query);

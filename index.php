@@ -42,15 +42,31 @@ $(".toggleMobile").removeClass("active");
 <span class="menu3"></span></div>
 <div id="mobileMenu">
 <ul>
+
 <li><a href=".">Home</a></li>
-<li><a href="index.php?click=login">Login</a></li>
+
+<?php
+session_start();
+if(isset($_SESSION['login'])){
+echo "<li><a href='index.php?click=logout'>Logout</a></li>";
+}else{
+echo "<li><a href='index.php?click=login'>Login</a></li>";
+}
+?>
+
 
 <li><a href="index.php?click=drei">Drei</a></li></ul></div>
 <nav>
 <ul>
 <li><a href=".">Home</a></li>
-<li><a href="index.php?click=login">Login</a></li>
-
+<?php
+session_start();
+if(isset($_SESSION['login'])){
+echo "<li><a href='index.php?click=logout'>Logout</a></li>";
+}else{
+echo "<li><a href='index.php?click=login'>Login</a></li>";
+}
+?>
 <li><a href="index.php?click=drei">Drei</a></li></ul></nav></header>
 <hr>
 <div class="content">
@@ -62,6 +78,8 @@ $(".toggleMobile").removeClass("active");
      case 'login': include('login.html');break;  
 	 case 'register': include('register.html');break; 
 	case 'logout': include('logout.html');break; 
+	case 'profiles': include('profiles.html');break;
+	case 'articles': include('articles.html');break;
     
      default: include('inhalt.html');
    }  

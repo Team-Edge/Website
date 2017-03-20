@@ -1,14 +1,33 @@
-<h2>Wilkommen 
+<h2>Willkommen 
 <?php
 session_start();
 if(isset($_SESSION['login'])){
 echo $_SESSION['user']['username'];
+echo "</h2>";
+
+#include("../../zugriff.php");
+#if ($mysqli->connect_error) {
+#	$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+#}
+
+
+
+echo "
+<profiles>
+<ul>
+<a href='index.php?click=articles&profile=name1'><li>Profil 1</li></a>
+<a href='index.php?click=articles&profile=name2'><li>Profil 2</li></a>
+<a href='index.php?click=articles&profile=name3'><li>Profil 3</li></a>
+
+</ul>
+</profiles>
+";
+
+
+}
+else{
+echo "</h2><p>Kurze Beschreibung</p>";
 }
 ?>
-</h2>
-<p>Kurze Beschreibung</p>
-<?php
-if(isset($_SESSION['login'])){
-echo "<p><a href=index.php?click=logout class=button>Logout</a></p>";
-}
-?> 
+
+

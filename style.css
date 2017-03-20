@@ -120,6 +120,38 @@ nav ul li a:hover
         color:#CB2323;
 }
 
+
+profiles
+{
+        position:absolute;
+        left:80;
+        
+}
+
+profiles ul
+{
+        list-style:none;
+}
+
+profiles ul li
+{
+        display:block;
+        padding:3px 15px;
+		height:30px;
+		width:250px;
+		background-color:white;
+		outline:0;
+		border-radius:0px 10px 0px 10px;
+		margin-bottom:20px;
+}
+profiles ul li:hover{
+		color:orange;
+		background-color:grey;
+		transition: all .25s ease;
+}
+
+
+
 #mobileMenu
 {
         position: fixed;
