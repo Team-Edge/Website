@@ -1,15 +1,15 @@
-<h2>Willkommen 
+
 <?php
 session_start();
 if(isset($_SESSION['login'])){
-echo $_SESSION['user']['username'];
-echo "</h2>";
+echo "<h1>Willkommen ".$_SESSION['user']['username']."!</h1><h2>Ihre Newsfeed Profile:</h2>";
+
 
 include("../../zugriff.php");
 if ($mysqli->connect_error) {
 $message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 }
-$SQL="SELECT * FROM `CustomFeed`, `User` WHERE CustomFeed.`User-ID`=User.`ID` AND User.username='".$_SESSION['user']['username']."'";
+$SQL="SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.username='".$_SESSION['user']['username']."'";
 
 
 
@@ -19,17 +19,40 @@ echo "
 <ul>
 ";
 foreach ($mysqli->query($SQL) as $row){
-echo "<a href='index.php?click=articles&profile=name1'><li>".$row['Name']."</li></a>";
+echo "<a href='index.php?click=settings&profile=".$row['ID']."'><img src='settings.png' alt='Settings' width=30px height=30px></a><a href='index.php?click=articles&profile=".$row['ID']."'><li><p>".$row['Name']."</p></li></a>";
+
 }
-echo "
+
+if(isset($_GET['n'])){
+if($_GET['n']=='1'){
+?>
+<form name='form' action="index.php?n=2" method="post">
+<label for="pname">Profilname: </label><input type="text" name="f[pname]" id="pname" ><input type="submit" name="submit" value="Anlegen">
+
+
+</form>
+
+
+<?php
+}
+else if($_GET['n']=='2'){
+include("../../zugriff.php");
+$SQL="Insert INTO CustomFeed values('',(SELECT ID FROM User WHERE username='".$_SESSION['user']['username']."'), '".$_POST['f']['pname']."')";
+$mysqli->query($SQL);
+if($_GET['reload'] != "none"){ echo '<meta http-equiv="Refresh" content="1; URL=https://occaso.me/website">';}
+}
+}
+else{
+echo "<a href='index.php?n=1'><li><p>Neues Profil anlegen...</p></li></a>
 </ul>
 </profiles>
 ";
+}
 
 
 }
 else{
-echo "</h2><p>Kurze Beschreibung</p>";
+echo "<div class='welcome'><h2>Willkommen!</h2><div class=welcp>Alle relevanten Nachrichten für Sie!</div><div class=welcp>Verschiedene Nachrichtenportale!</div><div class=welcp>Persönlich festgelegte Schlüsselwörter!</div><div class=welcp>Optionaler Versand per Mail!</div><div><a href=index.php?click=register><h3>Jetzt Registrieren!</h3></a></div></div>";
 }
 ?>
 

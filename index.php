@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel="stylesheet" href="../styles/eric-meyer-reset.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<link href="https://fonts.googleapis.com/css?family=Faster+One" rel="stylesheet">
 <script src="../scripts/jquery-3.1.1.min.js"></script>
 <script src="../scripts/prefixfree.js"></script>
 <script src="../scripts/Slides-SlidesJS-3/source/jquery.slides.min.js"></script>
@@ -48,26 +49,30 @@ $(".toggleMobile").removeClass("active");
 <?php
 session_start();
 if(isset($_SESSION['login'])){
+echo "<li><a href='index.php?click=account'>Account</a></li>";
 echo "<li><a href='index.php?click=logout'>Logout</a></li>";
 }else{
 echo "<li><a href='index.php?click=login'>Login</a></li>";
+echo "<li><a href='index.php?click=register'>Registrieren</a></li>";
 }
 ?>
 
 
-<li><a href="index.php?click=drei">Drei</a></li></ul></div>
+</ul></div>
 <nav>
 <ul>
 <li><a href=".">Home</a></li>
 <?php
 session_start();
 if(isset($_SESSION['login'])){
+echo "<li><a href='index.php?click=account'>Account</a></li>";
 echo "<li><a href='index.php?click=logout'>Logout</a></li>";
 }else{
 echo "<li><a href='index.php?click=login'>Login</a></li>";
+echo "<li><a href='index.php?click=register'>Registrieren</a></li>";
 }
 ?>
-<li><a href="index.php?click=drei">Drei</a></li></ul></nav></header>
+</ul></nav></header>
 <hr>
 <div class="content">
   <?php     
@@ -80,6 +85,8 @@ echo "<li><a href='index.php?click=login'>Login</a></li>";
 	case 'logout': include('logout.html');break; 
 	case 'profiles': include('profiles.html');break;
 	case 'articles': include('articles.html');break;
+	case 'settings': include('settings.html');break;
+	case 'fsettings':include('fsettings.html');break;
     
      default: include('inhalt.html');
    }  

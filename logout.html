@@ -1,5 +1,6 @@
 <?php
 session_start();
 session_destroy();
-include("inhalt.html");
+if($_GET['reload'] != "none"){ echo '<meta http-equiv="Refresh" content="1; URL=https://occaso.me/website">';}
+
 ?> 
