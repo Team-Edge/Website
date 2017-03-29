@@ -1,0 +1,57 @@
+
+<?php
+include("../../zugriff.php");
+if(isset($_GET['n'])&&isset($_GET['filter'])){
+if($_GET['n']=='3'){
+$SQL3="INSERT INTO FilterKeyword values(".$_GET['filter'].",'".$_POST['f']['key']."',2)";
+$mysqli->query($SQL3);
+}
+else if($_GET['n']=='4'){
+$SQL5="INSERT INTO FilterURL values(".$_GET['filter'].",".$_POST['f']['src'].")";
+$mysqli->query($SQL5);
+
+}
+}
+
+if(isset($_GET['filter'])){
+
+
+$SQL="SELECT Keyword FROM `FilterKeyword` WHERE Filter_ID=".$_GET['filter'];
+echo "<filter><h1>Einstellungen für Filter:</h1><div class=keys><h2>Schlagwörter:</h2><ul>";
+foreach($mysqli->query($SQL) as $row){
+echo"<li><p>".$row['Keyword']."</p></li>";
+}
+echo "<li><a href='index.php?click=fsettings&filter=".$_GET['filter']."&n=1'><img src='plus.png' width=30px, height=30px alt='plus'></a></li>";
+if(isset($_GET['n'])&&$_GET['n']=='1'){
+echo "<div><form name='form' action='index.php?click=fsettings&filter=".$_GET['filter']."&n=3' method='post'>
+<input type='text' name='f[key]' id='key' /> <input type='submit' name='submit' value='Anlegen' />
+
+</form></div>";
+}
+
+
+echo "</ul></div><div class=src><h2>Anbieter:</h2><ul>";
+$SQL2="SELECT Title From SourceFeed INNER JOIN FilterURL ON FilterURL.SourceFeed_ID=SourceFeed.ID WHERE FilterURL.Filter_ID =".$_GET['filter'];
+foreach($mysqli->query($SQL2) as $row2){
+echo"<li><p>".$row2['Title']."</p></li>";
+}
+echo "<li><a href='index.php?click=fsettings&filter=".$_GET['filter']."&n=2'><img src='plus.png' width=30px, height=30px alt='plus'></a></li>";
+if(isset($_GET['n'])&&$_GET['n']=='2'){
+echo "<div><form name='form' action='index.php?click=fsettings&filter=".$_GET['filter']."&n=4' method='post'>
+<select name='f[src]' id='src' /> ";
+
+$SQL4="SELECT * FROM SourceFeed";
+foreach($mysqli->query($SQL4) as $row3){
+echo "<option value=".$row3['ID'].">".$row3['Title']."</option>";
+}
+
+
+echo "</select>
+<input type='submit' name='submit' value='Anlegen' />
+
+</form></div>";
+}
+echo "</ul></div></filter>";
+}
+
+?>
