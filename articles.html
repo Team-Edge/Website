@@ -13,7 +13,7 @@ include("../../zugriff.php");
 			if($row2['Img_URL']==''){
 			$row2['Img_URL']='no-image-available.jpg';
 			}
-			echo "<div class=src><p>".$row2['t2']."</p><div class=thumb><img src='".$row2['Img_URL']."' class=thumb></div></div><p class=date>".$row2['PubDate']."</p><p class=titl>".$row2['t1']."</p><p class=desc>".$row2['Description']."</p></article></a>";
+			echo "<div class=src><p>".$row2['t2']."</p><div class=thumb><img src='".$row2['Img_URL']."' class=thumb></div></div><p class=date>".$row2['PubDate']."</p><div style=max-width:520px;float:left;><p class=titl>".$row2['t1']."</p><p class=desc>".$row2['Description']."</p></div><div style=clear:left;></div></article></a>";
 		}
 	}
    

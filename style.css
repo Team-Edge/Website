@@ -246,11 +246,16 @@ profiles img{
 
 article{
 	min-height:220px;
-	background-color:#ffc880;
-	border-radius:15px;
+	height:auto;
+	background-color:#C4C4C4;
+	color:black;
+	border-left:5px solid black;
+	border-right:5px solid black;
 	float:none;
 	padding: 10 10 10 10 ;
 	margin: 0 0 30 0;
+	
+	transition: all .25s ease;
 }
 
 article p.date{
@@ -259,6 +264,9 @@ article p.date{
 article p.titl{
 	font-size:20px;
 	text-decoration:underline;
+}
+article p.desc{
+	text-align:justify;
 }
 article img.thumb{
 
@@ -280,17 +288,34 @@ article div.thumb{
 	margin-right:20px;
 	height:180px;
 	width:320px;
-	background-color:black;
+	
 }
 article div.src{
 	width:320;
 	float:left;
 	margin-right:20px;
 }
-article:hover{
-	border-style:solid;
-	border-color:#990000;
-	border-width:3px;
+article:hover {
+	
+	background-color: #595959;
+	
+	transition: all .25s ease;
+}
+article:hover .titl{
+	color:orange;
+	transition: all .25s ease;
+}
+article:hover p{
+	color:white;
+	transition: all .25s ease;
+}
+article:hover .src p {
+	color:#C4C4C4;
+	transition: all .25s ease;
+}
+article:hover .date {
+	color:#C4C4C4;
+	transition: all .25s ease;
 }
 article div.src p{
 	font-size:20px;
