@@ -1,5 +1,6 @@
 
 <?php
+if(isset($_SESSION['login'])){
 include("../../zugriff.php");
 if(isset($_GET['n'])&&isset($_GET['filter'])){
 if($_GET['n']=='3'){
@@ -52,6 +53,10 @@ echo "</select>
 </form></div>";
 }
 echo "</ul></div></filter>";
+}
+}
+else{
+echo "<h1>Bitte versuchen Sie nicht unsere Seite zu hacken.<br>Es könnte Ihnen sonst möglicherweise gelingen.</h1>";
 }
 
 ?>

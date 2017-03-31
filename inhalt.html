@@ -9,18 +9,30 @@ include("../../zugriff.php");
 if ($mysqli->connect_error) {
 $message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 }
+if(isset($_GET['delete'])){
+$SQLD="DELETE FROM `CustomFeed` WHERE ID=".$_GET['delete']." AND User_ID=".$_SESSION['user']['ID'];
+$mysqli->query($SQLD);
+}
+
 $SQL="SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.username='".$_SESSION['user']['username']."'";
-
-
-
 
 echo "
 <profiles>
 <ul>
 ";
 foreach ($mysqli->query($SQL) as $row){
-echo "<a href='index.php?click=settings&profile=".$row['ID']."'><img src='settings.png' alt='Settings' width=30px height=30px></a><a href='index.php?click=articles&profile=".$row['ID']."'><li><p>".$row['Name']."</p></li></a>";
-
+$SQL2="SELECT count(*) as cnt FROM CustomFeedEntry, Filter WHERE Filter.ID=CustomFeedEntry.Filter_ID AND Filter.CustomFeed_ID=".$row['ID'];
+foreach($mysqli->query($SQL2) as $cnt){
+echo "<div style=position:relative;><a href='index.php?click=settings&profile=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=30px height=30px></a>
+<a href='index.php?click=articles&profile=".$row['ID']."'>
+<li>
+<div style=position:relative><pp>".$row['Name']." (".$cnt['cnt'].")</pp></div></li></a>
+<div id='del'><a href='index.php?del=".$row['ID']."'><img src='delete.png' alt='Delete' width=30px height=30px></a></div></div>
+";
+if(isset($_GET['del']) && $_GET['del']==$row['ID']){
+echo "<a href='index.php?delete=".$row['ID']."'><li id=lidel><div style=position:relative><pp>Löschen von &quot".$row['Name']."&quot...</pp></div></li></a>";
+}
+}
 }
 
 if(isset($_GET['n'])){
@@ -52,7 +64,22 @@ echo "<a href='index.php?n=1'><li><p>Neues Profil anlegen...</p></li></a>
 
 }
 else{
-echo "<div class='welcome'><h2>Willkommen!</h2><div class=welcp>Alle relevanten Nachrichten für Sie!</div><div class=welcp>Verschiedene Nachrichtenportale!</div><div class=welcp>Persönlich festgelegte Schlüsselwörter!</div><div class=welcp>Optionaler Versand per Mail!</div><div><a href=index.php?click=register><h3>Jetzt Registrieren!</h3></a></div></div>";
+?>
+
+
+<h1>Unser Team</h1>
+<div id='team'><h2>Kevin Mangold</h2><p>Projektleiter</p></div>
+
+<div id='team'><h2>Tessa Haschtschek</h2><p>Design</p></div>
+
+<div id='team'><h2>Severin Neuner</h2><p>Tests</p></div>
+
+<div id='team'><h2>Florian Schmidt</h2><p>Modellierung</p></div>
+
+<div id='team'><h2>Nicholas Dickel</h2><p>Implementierung</p></div><div style='clear:left;'></div>
+
+<?php
+//echo "<div class='welcome'><h2>Willkommen!</h2><div class=welcp>Alle relevanten Nachrichten für Sie!</div><div class=welcp>Verschiedene Nachrichtenportale!</div><div class=welcp>Persönlich festgelegte Schlüsselwörter!</div><div class=welcp>Optionaler Versand per Mail!</div><div><a href=index.php?click=register><h3>Jetzt Registrieren!</h3></a></div></div>";
 }
 ?>
 

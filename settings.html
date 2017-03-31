@@ -1,5 +1,7 @@
 ﻿
 <?php
+session_start();
+if(isset($_SESSION['login'])){
 include("../../zugriff.php");
 
 if(isset($_GET['profile'])){
@@ -9,7 +11,7 @@ $SQL="SELECT * From Filter WHERE CustomFeed_ID=".$_GET['profile'];
 echo "<profiles><ul>";
 foreach($mysqli->query($SQL) as $row){
 echo"
-<img src='settings.png' alt='Settings' width=30px height=30px><a href='index.php?click=fsettings&filter=".$row['ID']."'><li><p>".$row['Name']."</p></li></a>";
+<a href='index.php?click=fsettings&filter=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=30px height=30px></a><a href='index.php?click=fsettings&filter=".$row['ID']."'><li><p>".$row['Name']."</p></li></a>";
 
 }
 if(isset($_GET['n'])){
@@ -37,6 +39,10 @@ else{
 echo "<a href='index.php?click=settings&profile=".$_GET['profile']."&n=1'><li><p>Neuen Filter anlegen...</p></li></a>";
 }
 echo "</ul></profiles>";
+}
+}
+else{
+echo "<h1>Bitte versuchen Sie nicht unsere Seite zu hacken.<br>Es könnte Ihnen sonst möglicherweise gelingen.</h1>";
 }
 
 ?>
