@@ -10,28 +10,49 @@ if ($mysqli->connect_error) {
 $message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 }
 if(isset($_GET['delete'])){
-$SQLD="DELETE FROM `CustomFeed` WHERE ID=".$_GET['delete']." AND User_ID=".$_SESSION['user']['ID'];
-$mysqli->query($SQLD);
+
+$stmt=$mysqli->prepare("DELETE FROM `CustomFeed` WHERE ID=? AND User_ID=?");
+$stmt->bind_param('ss',$PID,$UID);
+
+$PID=strip_tags($_GET['delete']);
+$UID=strip_tags($_SESSION['user']['ID']);
+$stmt->execute();
+
 }
 
-$SQL="SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.username='".$_SESSION['user']['username']."'";
+$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.username=?");
+$stmt->bind_param('s',$uname);
+
+
+$uname=strip_tags($_SESSION['user']['username']);
+$stmt->execute();
+$result = $stmt->get_result();
+
 
 echo "
 <profiles>
 <ul>
 ";
-foreach ($mysqli->query($SQL) as $row){
+foreach ($result as $row){
 $SQL2="SELECT count(*) as cnt FROM CustomFeedEntry, Filter WHERE Filter.ID=CustomFeedEntry.Filter_ID AND Filter.CustomFeed_ID=".$row['ID'];
 foreach($mysqli->query($SQL2) as $cnt){
 echo "<div style=position:relative;><a href='index.php?click=settings&profile=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=30px height=30px></a>
 <a href='index.php?click=articles&profile=".$row['ID']."'>
 <li>
-<div style=position:relative><pp>".$row['Name']." (".$cnt['cnt'].")</pp></div></li></a>
-<div id='del'><a href='index.php?del=".$row['ID']."'><img src='delete.png' alt='Delete' width=30px height=30px></a></div></div>
-";
+<div style=position:relative><pp>".$row['Name']." (".$cnt['cnt'].")</pp></div></li></a>";
+
 if(isset($_GET['del']) && $_GET['del']==$row['ID']){
-echo "<a href='index.php?delete=".$row['ID']."'><li id=lidel><div style=position:relative><pp>Löschen von &quot".$row['Name']."&quot...</pp></div></li></a>";
+
+echo "<div id='del2'><a href='index.php?delete=".$row['ID']."'>Löschen...</a></div>";
+}else{
+
+echo "<div id='del'><a href='index.php?del=".$row['ID']."'><img src='delete.png' alt='Delete' width=30px height=30px></a></div>";
+
 }
+echo"
+</div>
+";
+
 }
 }
 
@@ -49,8 +70,15 @@ if($_GET['n']=='1'){
 }
 else if($_GET['n']=='2'){
 include("../../zugriff.php");
-$SQL="Insert INTO CustomFeed values('',(SELECT ID FROM User WHERE username='".$_SESSION['user']['username']."'), '".$_POST['f']['pname']."')";
-$mysqli->query($SQL);
+
+$stmt=$mysqli->prepare("Insert INTO CustomFeed values('',(SELECT ID FROM User WHERE username=?), ?)");
+$stmt->bind_param('ss',$uname,$pname);
+
+
+$uname=strip_tags($_SESSION['user']['username']);
+$pname=strip_tags($_POST['f']['pname']);
+$stmt->execute();
+
 if($_GET['reload'] != "none"){ echo '<meta http-equiv="Refresh" content="1; URL=https://occaso.me/website">';}
 }
 }

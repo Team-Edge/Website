@@ -4,22 +4,39 @@ if(isset($_SESSION['login'])){
 include("../../zugriff.php");
 if(isset($_GET['n'])&&isset($_GET['filter'])){
 if($_GET['n']=='3'){
-$SQL3="INSERT INTO FilterKeyword values(".$_GET['filter'].",'".$_POST['f']['key']."',2)";
-$mysqli->query($SQL3);
+$stmt=$mysqli->prepare("INSERT INTO FilterKeyword values(?,?,2,'')");
+$stmt->bind_param('ss',$filter,$key);
+
+$filter=strip_tags($_GET['filter']);
+$key=strip_tags($_POST['f']['key']);
+$stmt->execute();
+
 }
 else if($_GET['n']=='4'){
-$SQL5="INSERT INTO FilterURL values(".$_GET['filter'].",".$_POST['f']['src'].")";
-$mysqli->query($SQL5);
+
+
+$stmt=$mysqli->prepare("INSERT INTO FilterURL values(?,?)");
+$stmt->bind_param('ss',$filter,$src);
+
+$filter=strip_tags($_GET['filter']);
+$src=strip_tags($_POST['f']['src']);
+$stmt->execute();
+
 
 }
 }
 
 if(isset($_GET['filter'])){
 
+$stmt=$mysqli->prepare("SELECT Keyword FROM `FilterKeyword` WHERE Filter_ID=?");
+$stmt->bind_param('s',$filter);
 
-$SQL="SELECT Keyword FROM `FilterKeyword` WHERE Filter_ID=".$_GET['filter'];
+$filter=strip_tags($_GET['filter']);
+$stmt->execute();
+$result = $stmt->get_result();
+
 echo "<filter><h1>Einstellungen für Filter:</h1><div class=keys><h2>Schlagwörter:</h2><ul>";
-foreach($mysqli->query($SQL) as $row){
+foreach($result as $row){
 echo"<li><p>".$row['Keyword']."</p></li>";
 }
 echo "<li><a href='index.php?click=fsettings&filter=".$_GET['filter']."&n=1'><img src='plus.png' width=30px, height=30px alt='plus'></a></li>";
@@ -32,8 +49,15 @@ echo "<div><form name='form' action='index.php?click=fsettings&filter=".$_GET['f
 
 
 echo "</ul></div><div class=src><h2>Anbieter:</h2><ul>";
-$SQL2="SELECT Title From SourceFeed INNER JOIN FilterURL ON FilterURL.SourceFeed_ID=SourceFeed.ID WHERE FilterURL.Filter_ID =".$_GET['filter'];
-foreach($mysqli->query($SQL2) as $row2){
+
+$stmt=$mysqli->prepare("SELECT Title From SourceFeed INNER JOIN FilterURL ON FilterURL.SourceFeed_ID=SourceFeed.ID WHERE FilterURL.Filter_ID =?");
+$stmt->bind_param('s',$filter);
+
+$filter=strip_tags($_GET['filter']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+foreach($result as $row2){
 echo"<li><p>".$row2['Title']."</p></li>";
 }
 echo "<li><a href='index.php?click=fsettings&filter=".$_GET['filter']."&n=2'><img src='plus.png' width=30px, height=30px alt='plus'></a></li>";

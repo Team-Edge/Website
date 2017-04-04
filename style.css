@@ -99,6 +99,8 @@ header
         max-width:900px;
         margin: 0 auto 20px auto;
 		
+		
+		
 }
 
 header h1
@@ -113,7 +115,7 @@ header p
 {
         font-family: 'Open Sans', sans-serif;
         font-size:16px;
-        color: #4A463B;
+        
         margin-left:132px;
 }
 
@@ -264,12 +266,15 @@ profiles ul li
 		box-shadow: 10px 10px 5px grey;
 }
 
-profiles ul li#lidel
+profiles ul #lidel
 {
-        margin:-10 0 20 30;
-		border-radius:0px 30px 0px 30px;
-		background-color:#CB2323;
-		color:white;
+        position:relative;
+		float:right;
+		
+		background-color:transparent;
+		border:0;
+		color:red;
+		box-shadow:none;
 		
 		
 }
@@ -289,6 +294,17 @@ profiles #del{
 	position:absolute;
 	left:390px;
 	top:2px;
+}
+profiles #del2{
+	position:absolute;
+	height:22px;
+	left:335px;
+	top:2px;
+	background-color:#CB2323;
+	padding:7px 2px 0px 5px;
+	border:3px solid black;
+	border-radius:4px;
+	color:white;
 }
 profiles pp{
 	position:absolute;
@@ -445,6 +461,7 @@ filter div.src{
 {
 		width:900px;
 		max-width:900px;
+		min-height:550px;
 		margin:0 auto;
 		padding: 40px 0 45px 0;
 		

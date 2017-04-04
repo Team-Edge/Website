@@ -7,9 +7,15 @@ include("../../zugriff.php");
 if(isset($_GET['profile'])){
 echo "<h1>Filter für dieses Profil:</h1>";
 
-$SQL="SELECT * From Filter WHERE CustomFeed_ID=".$_GET['profile'];
+
+$stmt=$mysqli->prepare("SELECT * From Filter WHERE CustomFeed_ID=?");
+$stmt->bind_param('s',$profile);
+$profile=strip_tags($_GET['profile']);
+$stmt->execute();
+$result = $stmt->get_result();
+
 echo "<profiles><ul>";
-foreach($mysqli->query($SQL) as $row){
+foreach($result as $row){
 echo"
 <a href='index.php?click=fsettings&filter=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=30px height=30px></a><a href='index.php?click=fsettings&filter=".$row['ID']."'><li><p>".$row['Name']."</p></li></a>";
 
@@ -27,8 +33,13 @@ echo"
 ";
 }
 else if($_GET['n']=='2'){
-$SQL2="Insert INTO Filter values('',".$_GET['profile'].",'".$_POST['f']['fname']."')";
-$mysqli->query($SQL2);
+
+$stmt2=$mysqli->prepare("Insert INTO Filter values('',?,?)");
+$stmt2->bind_param('ss',$profile,$filter);
+$profile=strip_tags($_GET['profile']);
+$filter=strip_tags($_POST['f']['fname']);
+$stmt2->execute();
+
 if($_GET['reload'] != "none"){ echo '<meta http-equiv="Refresh" content="1; URL="index.php?click=settings&profile='.$_GET['profile'].'">';}
 header("Location: index.php?click=settings&profile=".$_GET['profile']);
 

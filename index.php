@@ -109,15 +109,15 @@ else{
 <article id="slider_content1">
 <h3>Wilkommen!</h3>
 <p>Alle für Sie interessanten Nachrichten!</p>
-<a class="button" href="#four_columns">Jetzt Registrieren!</a></article>
+<a class="button" href="index.php?click=register">Jetzt Registrieren!</a></article>
 <article id="slider_content2">
 <h3>Persönlich!</h3>
 <p>Erstellen Sie ihre persönlichen Newsprofile!</p>
-<a class="button" href="download">Jetzt Registrieren</a></article>
+<a class="button" href="index.php?click=register">Jetzt Registrieren</a></article>
 <article id="slider_content3">
 <h3>Überall!</h3>
 <p>Egal ob auf unserer Seite oder per Mail: Sie sind immer auf dem neusten Stand!</p>
-<a class="button" href="contact">Jetzt Registrieren</a></article>
+<a class="button" href="index.php?click=register">Jetzt Registrieren</a></article>
 <div id="slides" style="display:block;">
 <img src="news.jpg" alt="Picture 1">
 <img src="news2.jpg" alt="Picture 2">
