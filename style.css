@@ -16,7 +16,7 @@ input
         font-family: 'Open Sans', sans-serif;
         font-size:16px;
         padding: 7px;
-        outline: 0;
+        outline:0 ;
         border:1;
         width:250px;
         background: #E9E4D6;
@@ -37,6 +37,7 @@ input[type=submit]
 
 select {
   
+  width:250px;
   border: 1px solid #bbb;
   padding:.75em 1em .5em 1em;
   box-shadow: 0 2px 1px 0 rgba(0,0,0,0.2);
@@ -239,6 +240,16 @@ nav ul li:hover
 	height:100px;
 }
 
+.Acc{
+	margin-bottom:30px;
+}
+.Acc td{
+	
+	min-width:100px;
+	padding-bottom:20px;
+}
+
+
 
 profiles
 {
@@ -293,7 +304,7 @@ profiles #set{
 profiles #del{
 	position:absolute;
 	left:390px;
-	top:2px;
+	top:4px;
 }
 profiles #del2{
 	position:absolute;
@@ -401,6 +412,142 @@ filter div.src{
 
 
 
+details{
+	margin-bottom:10px;
+	
+	
+}
+DETAILS[open] SUMMARY ~ * 
+{
+ animation: sweep .5s ease-in-out;
+}
+
+@keyframes sweep 
+{
+ 0%    {opacity: 0; margin-left: -10px}
+ 100%  {opacity: 1; margin-left: 0px}
+}
+
+
+.top summary{
+	background-color:#b3b3b3;
+	width:400px;
+	height:30px;
+	padding:10px 0px 0px 10px;
+	border:1px solid black;
+	border-radius:0px 10px 0px 10px;
+	box-shadow:10px 10px 5px grey;
+	margin-bottom:20px;
+	
+}
+.top summary:hover{
+	color:orange;
+	background-color:#595959;
+}
+.top ul li{
+	margin-top:10px;
+	
+}
+
+
+.bot{
+	margin-left:40px;
+}
+.bot summary{
+	background-color:#b3b3b3;
+	width:400px;
+	height:30px;
+	padding:10px 0px 0px 10px;
+	border:1px solid black;
+	border-radius:0px 10px 0px 10px;
+	margin-bottom:20px;
+	
+}
+.bot summary:hover{
+	color:orange;
+	background-color:#595959;
+}
+.bot ul li{
+	background-color:#b3b3b3;
+	width:400px;
+	height:30px;
+	margin:10 0 20 40px;
+	padding:10px 0px 0px 10px;
+	border:1px solid black;
+	border-radius:0px 10px 0px 10px;
+	box-shadow:10px 10px 5px grey;
+	
+}
+
+.del{
+	float:right;
+	margin-top: -5px;
+	
+	padding-right:5px;
+	
+}
+.del2{
+	float:right;
+	margin-top: 5px;
+	margin-right:490px;
+	
+	padding-right:5px;
+}
+
+.newW {
+	width:400px;
+	margin-left:40px;
+	margin-top:20px;
+	padding:10px;
+	border: 2px dotted grey;
+	border-radius:0px 30px 0px 30px;
+}
+.newW p{
+	font-size:20px;
+}
+.newK{
+	margin-left:40px;
+}
+.newOpt input{
+	margin-top:10px;
+	margin-left:40px;
+	width:auto;
+}
+.newOpt select{
+	margin-top:10px;
+	margin-left:20px;
+	width:auto;
+}
+.invert{
+	float:left;
+	color:#CB2323;
+}
+.normal{
+	float:left;
+}
+.additional{
+	background-color:#595959;
+	color:white;
+	width:352px;
+	margin-left:80px;
+	margin-top:-20px;
+	padding:10px;
+	display:none;
+	border-radius:0px 0px 0px 10px;
+	
+}
+details li:hover + .additional{
+	
+	display:block;
+	animation: add .3s ease-out;
+}
+
+
+@keyframes add 
+{
+ 0%    {opacity: 0; margin-top: -30px}
+ 100%  {opacity: 1; margin-top: -20px}
+}
 
 
 #mobileMenu
@@ -446,6 +593,7 @@ filter div.src{
         text-decoration:none;
         border-radius:5px;
         box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
+		margin-right:10px;
 }
 
 .button:hover

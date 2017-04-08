@@ -69,16 +69,16 @@ effect: "fade"}});});
 <div id="mobileMenu">
 <ul>
 
-<li><a href=".">Home</a></li>
+<a href="."><li>Home</li></a>
 
 <?php
 session_start();
 if(isset($_SESSION['login'])){
-echo "<li><a href='index.php?click=account'>Account</a></li>";
-echo "<li><a href='index.php?click=logout'>Logout</a></li>";
+echo "<a href='index.php?click=account'><li>Account</li></a>";
+echo "<a href='index.php?click=logout'><li>Logout</li></a>";
 }else{
-echo "<li><a href='index.php?click=login'>Login</a></li>";
-echo "<li><a href='index.php?click=register'>Registrieren</a></li>";
+echo "<a href='index.php?click=login'><li>Login</li></a>";
+echo "<a href='index.php?click=register'><li>Registrieren</li></a>";
 }
 ?>
 
@@ -86,21 +86,21 @@ echo "<li><a href='index.php?click=register'>Registrieren</a></li>";
 </ul></div>
 <nav>
 <ul>
-<li><a href=".">Home</a></li>
+<a href="."><li>Home</li></a>
 <?php
-session_start();
+
 if(isset($_SESSION['login'])){
-echo "<li><a href='index.php?click=account'>Account</a></li>";
-echo "<li><a href='index.php?click=logout'>Logout</a></li>";
+echo "<a href='index.php?click=account'><li>Account</li></a>";
+echo "<a href='index.php?click=logout'><li>Logout</li></a>";
 }else{
-echo "<li><a href='index.php?click=login'>Login</a></li>";
-echo "<li><a href='index.php?click=register'>Registrieren</a></li>";
+echo "<a href='index.php?click=login'><li>Login</li></a>";
+echo "<a href='index.php?click=register'><li>Registrieren</li></a>";
 }
 ?>
 </ul></nav></header>
 
 <?php
-session_start();
+
 if(isset($_SESSION['login']) || isset($_GET['click'])){}
 else{
 	echo'
@@ -135,9 +135,9 @@ else{
 	case 'logout': include('logout.html');break; 
 	case 'profiles': include('profiles.html');break;
 	case 'articles': include('articles.html');break;
-	case 'settings': include('settings.html');break;
-	case 'fsettings':include('fsettings.html');break;
-    
+	
+	case 'settings2':include('settings2.html');break;
+    case 'account':include('account.html');break;
      default: include('inhalt.html');
    }  
    

@@ -1,6 +1,5 @@
 
 <?php
-session_start();
 if(isset($_SESSION['login'])){
 echo "<h1>Willkommen ".$_SESSION['user']['username']."!</h1><h2>Ihre Newsfeed Profile:</h2>";
 
@@ -9,6 +8,7 @@ include("../../zugriff.php");
 if ($mysqli->connect_error) {
 $message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 }
+
 if(isset($_GET['delete'])){
 
 $stmt=$mysqli->prepare("DELETE FROM `CustomFeed` WHERE ID=? AND User_ID=?");
@@ -20,11 +20,11 @@ $stmt->execute();
 
 }
 
-$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.username=?");
+$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.ID=?");
 $stmt->bind_param('s',$uname);
 
 
-$uname=strip_tags($_SESSION['user']['username']);
+$uname=strip_tags($_SESSION['user']['ID']);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -36,7 +36,7 @@ echo "
 foreach ($result as $row){
 $SQL2="SELECT count(*) as cnt FROM CustomFeedEntry, Filter WHERE Filter.ID=CustomFeedEntry.Filter_ID AND Filter.CustomFeed_ID=".$row['ID'];
 foreach($mysqli->query($SQL2) as $cnt){
-echo "<div style=position:relative;><a href='index.php?click=settings&profile=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=30px height=30px></a>
+echo "<div style=position:relative;><a href='index.php?click=settings2&profile=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=30px height=30px></a>
 <a href='index.php?click=articles&profile=".$row['ID']."'>
 <li>
 <div style=position:relative><pp>".$row['Name']." (".$cnt['cnt'].")</pp></div></li></a>";
