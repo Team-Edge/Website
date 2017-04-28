@@ -134,6 +134,32 @@ if(isset($_SESSION['login'])){
 					}else include 'hacker.html';
 				}else include 'hacker.html';}
 			}
+			
+			else if($_GET['n']=='7'){
+				$twitteraccount=strip_tags($_POST['f']['twitter']);
+				$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitteraccount;
+				$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID) VALUES (?, ?, 120, ?)");
+				$userid = $_SESSION['user']['ID'];
+				$stmt->bind_param('ssi',$url, $twitteraccount, $userid);
+				$stmt->execute();
+
+				$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+				$stmt->bind_param('si',$url, $userid);
+				$stmt->execute();
+				$result=$stmt->get_result();
+				foreach($result as $row){
+					$sourcefeed=$row['ID'];
+					$file="./Caches/Cache".$sourcefeed.".txt";	
+					$filter=strip_tags($_GET['filter']);
+					$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+					$stmt->bind_param('si',$file,$sourcefeed);
+					$stmt->execute();
+					
+					$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+					$stmti->bind_param('ii',$filter,$sourcefeed);
+					$stmti->execute();
+				}
+			}
 			else include 'hacker.html';
 			}
 		}
@@ -223,7 +249,7 @@ if(isset($_SESSION['login'])){
 				echo "<div class=newW><p>Neu:</p><div style=margin-left:40px;><form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=3' method='post'>
 				<select name='f[src]' id='src' /> ";
 
-				$SQL4="SELECT * FROM SourceFeed";
+				$SQL4="SELECT * FROM SourceFeed WHERE User_ID=0";
 				foreach($mysqli->query($SQL4) as $row3){
 				echo "<option value=".$row3['ID'].">".$row3['Title']."</option>";
 				}
@@ -232,7 +258,17 @@ if(isset($_SESSION['login'])){
 				echo "</select>
 				<input type='submit' name='submit' value='Anlegen' />
 
-				</form></div></div>";
+				</form></div></div>
+				
+				<div class=newW>
+					<p>Twitter Account @:</p>
+					<div style=margin-left:40px;>
+					<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=7' method='post'>
+					<input type='text' name='f[twitter]' id='twitter'><input type='submit' name='submit' value='Anlegen'>
+					</form>
+					</div>
+				</div>
+				";
 
 			
 			echo "</ul></details></li></ul></details>";
