@@ -16,8 +16,8 @@ $mail->Host = "smtp.gmail.com";
 // optional
 // used only when SMTP requires authentication  
 $mail->SMTPAuth = true;
-$mail->Username = 'uv.kontinuum@gmail.com';
-$mail->Password = 'kontinuum';
+$mail->Username = 'TeamEdgeNF@gmail.com';
+$mail->Password = 'TeamEdgePW';
 
 
 include("../../zugriffWE.php");
@@ -73,7 +73,7 @@ if (!$mail->send()) {
 	?>
 	<h1>Kontakt</h1>
 	<form name='mail' action='index.php?click=contact' method='post'>
-	<input type='hidden' name='address' value='uv.kontinuum@gmail.com'>
+	<input type='hidden' name='address' value='TeamEdgeNF@gmail.com'>
 	<p>Betreff</p><input type='text' name='subject'>
 	<p>Nachricht</p><textarea rows="10" cols="80" name='message' style='resize:none;'></textarea><br>
 	<input type='submit' name='submit' value='Absenden'>
