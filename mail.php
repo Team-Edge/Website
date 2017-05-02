@@ -14,18 +14,18 @@ $mail->Host = "smtp.gmail.com";
 // optional
 // used only when SMTP requires authentication  
 $mail->SMTPAuth = true;
-$mail->Username = 'occaso42@gmail.com';
-$mail->Password = 'WC00klo96';
+$mail->Username = 'uv.kontinuum@gmail.com';
+$mail->Password = 'kontinuum';
 
 
 //Set who the message is to be sent from
-$mail->setFrom('from@example.com', 'First Last');
+$mail->setFrom('uv.kontinuum@gmail.com', 'Kontinuum Untervermietung');
 //Set an alternative reply-to address
-$mail->addReplyTo('replyto@example.com', 'First Last');
+$mail->addReplyTo('uv.kontinuum@gmail.com', 'Kontinuum Untervermietung');
 //Set who the message is to be sent to
-$mail->addAddress('nicholas.dickel@education-siemens.com', 'John Doe');
+$mail->addAddress('occaso42@gmail.com', 'John Doe');
 //Set the subject line
-$mail->Subject = 'PHPMailer mail() test';
+$mail->Subject = 'Kontinnuum mail test';
 
 
 ob_start(); 

@@ -235,7 +235,7 @@ nav ul li:hover
 
 #team{
 	float:left;
-	
+	text-align:center;
 	width:180px;
 	height:100px;
 }
@@ -534,6 +534,7 @@ DETAILS[open] SUMMARY ~ *
 	padding:10px;
 	display:none;
 	border-radius:0px 0px 0px 10px;
+	box-shadow:10px 8px 5px grey;
 	
 }
 details li:hover + .additional{
@@ -775,6 +776,9 @@ footer .wrapper .column h4
 		.content{
 			width:700px;
 		}
+		.del2{
+			margin-right:290px;
+		}
 		article div.src{
 			display:none;
 		}
@@ -844,6 +848,9 @@ footer .wrapper .column h4
 		.content{
 			width:500px;
 		}
+		.del2{
+			margin-right:90px;
+		}
        
 }
 
@@ -852,7 +859,7 @@ footer .wrapper .column h4
         header
         {
             margin-top: 80px;
-			margin-left:-40px;
+			margin-left:0px;
             text-align: center;
 			height:75px
         }        
@@ -935,6 +942,7 @@ footer .wrapper .column h4
         header h1 img
         {
                 width:350px;
+				height:auto;
         }
 		
 		input[type=text]{
@@ -962,6 +970,9 @@ footer .wrapper .column h4
                 margin: 0 auto 15px auto;
                 max-width:300px;
         }
+		.del2{
+			margin-right:-110px;
+		}
        
 }
 

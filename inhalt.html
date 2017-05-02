@@ -19,6 +19,21 @@ $UID=strip_tags($_SESSION['user']['ID']);
 $stmt->execute();
 
 }
+if(isset($_GET['n'])){
+
+if($_GET['n']=='2'){
+include("../../zugriff.php");
+
+$stmt=$mysqli->prepare("Insert INTO CustomFeed values('',(SELECT ID FROM User WHERE username=?), ?)");
+$stmt->bind_param('ss',$uname,$pname);
+
+
+$uname=strip_tags($_SESSION['user']['username']);
+$pname=strip_tags($_POST['f']['pname']);
+$stmt->execute();
+
+}
+}
 
 $stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.ID=?");
 $stmt->bind_param('s',$uname);
@@ -56,8 +71,7 @@ echo"
 }
 }
 
-if(isset($_GET['n'])){
-if($_GET['n']=='1'){
+if(isset($_GET['n'])&&$_GET['n']=='1'){
 ?>
 <form name='form' action="index.php?n=2" method="post">
 <label for="pname">Profilname: </label><input type="text" name="f[pname]" id="pname" ><input type="submit" name="submit" value="Anlegen">
@@ -67,20 +81,6 @@ if($_GET['n']=='1'){
 
 
 <?php
-}
-else if($_GET['n']=='2'){
-include("../../zugriff.php");
-
-$stmt=$mysqli->prepare("Insert INTO CustomFeed values('',(SELECT ID FROM User WHERE username=?), ?)");
-$stmt->bind_param('ss',$uname,$pname);
-
-
-$uname=strip_tags($_SESSION['user']['username']);
-$pname=strip_tags($_POST['f']['pname']);
-$stmt->execute();
-
-if($_GET['reload'] != "none"){ echo '<meta http-equiv="Refresh" content="1; URL=https://occaso.me/website">';}
-}
 }
 else{
 echo "<a href='index.php?n=1'><li><p>Neues Profil anlegen...</p></li></a>
@@ -96,15 +96,15 @@ else{
 
 
 <h1>Unser Team</h1>
-<div id='team'><h2>Kevin Mangold</h2><p>Projektleiter</p></div>
+<div id='team'><h2>Kevin<br>Mangold</h2><p>Projektleiter</p></div>
 
-<div id='team'><h2>Tessa Haschtschek</h2><p>Design</p></div>
+<div id='team'><h2>Tessa<br>Haschtschek</h2><p>Design</p></div>
 
-<div id='team'><h2>Severin Neuner</h2><p>Tests</p></div>
+<div id='team'><h2>Severin<br>Neuner</h2><p>Tests</p></div>
 
-<div id='team'><h2>Florian Schmidt</h2><p>Modellierung</p></div>
+<div id='team'><h2>Florian<br>Schmidt</h2><p>Modellierung</p></div>
 
-<div id='team'><h2>Nicholas Dickel</h2><p>Implementierung</p></div><div style='clear:left;'></div>
+<div id='team'><h2>Nicholas<br>Dickel</h2><p>Implementierung</p></div><div style='clear:left;'></div>
 
 <?php
 //echo "<div class='welcome'><h2>Willkommen!</h2><div class=welcp>Alle relevanten Nachrichten für Sie!</div><div class=welcp>Verschiedene Nachrichtenportale!</div><div class=welcp>Persönlich festgelegte Schlüsselwörter!</div><div class=welcp>Optionaler Versand per Mail!</div><div><a href=index.php?click=register><h3>Jetzt Registrieren!</h3></a></div></div>";
