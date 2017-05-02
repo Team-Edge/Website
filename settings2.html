@@ -160,6 +160,33 @@ if(isset($_SESSION['login'])){
 					$stmti->execute();
 				}
 			}
+			
+			else if($_GET['n']=='8'){
+				$facebook=strip_tags($_POST['f']['facebook']);
+				$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID) VALUES (?, ?, 120, ?)");
+				$userid = $_SESSION['user']['ID'];
+				$name = substr($facebook, 25);
+				$name = substr($name, 0, -1);
+				$stmt->bind_param('ssi',$facebook, $name, $userid);
+				$stmt->execute();
+
+				$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+				$stmt->bind_param('si',$facebook, $userid);
+				$stmt->execute();
+				$result=$stmt->get_result();
+				foreach($result as $row){
+					$sourcefeed=$row['ID'];
+					$file="./Caches/Cache".$sourcefeed.".txt";	
+					$filter=strip_tags($_GET['filter']);
+					$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+					$stmt->bind_param('si',$file,$sourcefeed);
+					$stmt->execute();
+					
+					$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+					$stmti->bind_param('ii',$filter,$sourcefeed);
+					$stmti->execute();
+				}
+			}
 			else include 'hacker.html';
 			}
 		}
@@ -265,6 +292,15 @@ if(isset($_SESSION['login'])){
 					<div style=margin-left:40px;>
 					<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=7' method='post'>
 					<input type='text' name='f[twitter]' id='twitter'><input type='submit' name='submit' value='Anlegen'>
+					</form>
+					</div>
+				</div>
+				
+				<div class=newW>
+					<p>Facebook URL:</p>
+					<div style=margin-left:40px;>
+					<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=8' method='post'>
+					<input type='text' name='f[facebook]' id='facebook'><input type='submit' name='submit' value='Anlegen'>
 					</form>
 					</div>
 				</div>
