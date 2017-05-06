@@ -4,326 +4,1057 @@ if(isset($_SESSION['login'])){
 	include("../../zugriff.php");
 
 	if(isset($_GET['profile'])){
-	$stmt=$mysqli->prepare("SELECT User_ID FROM CustomFeed Where ID=?");
-	$stmt->bind_param('s',$profile);
-	$profile=strip_tags($_GET['profile']);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	foreach($result as $userdb){
-	if($userdb['User_ID']==$_SESSION['user']['ID']){
-	
-	
 		if(isset($_GET['n'])){
 			if($_GET['n']=='1'){
-				if(isset($_POST['f'])){
-				$stmti=$mysqli->prepare("Insert INTO Filter values('',?,?)");
-				$stmti->bind_param('ss',$profile,$filter);
+				$stmt=$mysqli->prepare("INSERT INTO Filter (CustomFeed_ID, Name) VALUES (?, ?)");
+				$stmt->bind_param("is",$profile,$profile);
 				$profile=strip_tags($_GET['profile']);
-				$filter=strip_tags($_POST['f']['fname']);
-				$stmti->execute();
-				}
-			
-			}
-			else if(isset($_GET['filter'])){
-			if($_GET['n']=='2'){
+				$stmt->execute();
 				
+				$stmt=$mysqli->prepare("SELECT MAX(ID) AS ID FROM Filter WHERE CustomFeed_ID=? AND Name=?");
+				$stmt->bind_param("is",$profile,$profile);
+				$profile=strip_tags($_GET['profile']);
+				$stmt->execute();
+				$result = $stmt->get_result();
 				
-				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=strip_tags($_GET['filter']);
-				$stmt->execute();
-				$result=$stmt->get_result();
-				foreach($result as $fcheck){
-				if($fcheck['CustomFeed_ID']==$_GET['profile']){
-				$stmt=$mysqli->prepare("INSERT INTO FilterKeyword values(?,?,?,?)");
-				$stmt->bind_param('isii',$filter,$key,$SI,$invert);
-
-				$filter=strip_tags($_GET['filter']);
-				$key=strip_tags($_POST['f']['key']);
-				$SI=strip_tags($_POST['f']['searchindex']);
-				$invert=0;
-				if(isset($_POST['f']['not'])){$invert=1;}
-				$stmt->execute();
-				}
-				}
-				}
-			else if($_GET['n']=='3'){
-
-
-				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=strip_tags($_GET['filter']);
-				$stmt->execute();
-				$result=$stmt->get_result();
-				foreach($result as $fcheck){
-				if($fcheck['CustomFeed_ID']==$_GET['profile']){
-				$stmt=$mysqli->prepare("INSERT INTO FilterURL values(?,?)");
-				$stmt->bind_param('ss',$filter,$src);
-
-				$filter=strip_tags($_GET['filter']);
-				$src=strip_tags($_POST['f']['src']);
-				$stmt->execute();
-				}
-				}
-				
-
-			}
-			else if($_GET['n']=='4'){
-				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=strip_tags($_GET['filter']);
-				$stmt->execute();
-				$result=$stmt->get_result();
-				foreach($result as $fcheck){
-				if($fcheck['CustomFeed_ID']==$_GET['profile']){
-			
-				$stmt=$mysqli->prepare("DELETE FROM `Filter` WHERE ID=?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=strip_tags($_GET['filter']);
-				$stmt->execute();
-				}else include 'hacker.html';}
-			}
-			else if($_GET['n']=='5'){
-				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=strip_tags($_GET['filter']);
-				$stmt->execute();
-				$result=$stmt->get_result();
-				foreach($result as $fcheck){
-				if($fcheck['CustomFeed_ID']==$_GET['profile']){
-					if(isset($_GET['a'])){
-						$arr=unserialize(base64_decode(urldecode($_GET['a'])));
-						if($arr[0]==$_GET['filter']){
-							$stmt=$mysqli->prepare("DELETE FROM `Newsfeed`.`FilterKeyword` WHERE `FilterKeyword`.`Filter_ID` = ? AND `FilterKeyword`.`Keyword` = ? AND `FilterKeyword`.`SearchIndex` = ? AND `FilterKeyword`.`Inverted` = ?");
-							$stmt->bind_param('isii',$filter,$key,$search,$inv);
-
-							$filter=strip_tags($_GET['filter']);
-							$key=strip_tags($arr[1]);
-							$search=strip_tags($arr[2]);
-							$inv=strip_tags($arr[3]);
+				foreach($result as $row){
+					$suchart = $_REQUEST['Suchart'];
+					$invertiert = $_REQUEST['inv'];
+					$word0 = strip_tags($_POST['f']['word0']);
+					if($word0 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word0,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word1 = strip_tags($_POST['f']['word1']);
+					if($word1 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word1,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word2 = strip_tags($_POST['f']['word2']);
+					if($word2 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word2,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word3 = strip_tags($_POST['f']['word3']);
+					if($word3 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word3,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word4 = strip_tags($_POST['f']['word4']);
+					if($word4 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word4,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word5 = strip_tags($_POST['f']['word5']);
+					if($word5 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word5,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word6 = strip_tags($_POST['f']['word6']);
+					if($word6 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word6,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word7 = strip_tags($_POST['f']['word7']);
+					if($word7 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word7,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word8 = strip_tags($_POST['f']['word8']);
+					if($word8 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word8,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					$word9 = strip_tags($_POST['f']['word9']);
+					if($word9 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO FilterKeyword (Filter_ID, Keyword, SearchIndex, Inverted) VALUES(?, ?, ?, ?)");
+						$stmt->bind_param("isii",$row['ID'],$word9,$suchart,$invertiert);
+						$stmt->execute();
+					}
+					
+					$SQL="SELECT * FROM SourceFeed WHERE User_ID=0";
+					foreach($mysqli->query($SQL) as $row2){
+						$title = $row2['Title'];
+						$title = str_replace(' ', '-', $title);
+						if(isset($_POST[$title])){
+							if($_POST[$title]==$row2['ID']){
+								$stmt=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+								$stmt->bind_param("ii",$row['ID'],$row2['ID']);
+								$stmt->execute();
+							}
+						}
+					}
+					
+					$userid = $_SESSION['user']['ID'];
+					
+					$twitter0 = strip_tags($_POST['f']['twitter0']);
+					if($twitter0 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter0;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter0, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
 							$stmt->execute();
-						}else include 'hacker.html';
-					}else include 'hacker.html';
 							
-				}else include 'hacker.html';}
-			}
-			else if($_GET['n']=='6'){
-				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=strip_tags($_GET['filter']);
-				$stmt->execute();
-				$result=$stmt->get_result();
-				foreach($result as $fcheck){
-				if($fcheck['CustomFeed_ID']==$_GET['profile']){
-					if(isset($_GET['a'])){
-						$arr=unserialize(base64_decode(urldecode($_GET['a'])));
-						if($arr[0]==$_GET['filter']){
-							$stmt=$mysqli->prepare("DELETE FROM `Newsfeed`.`FilterURL` WHERE `FilterURL`.`Filter_ID` = ? AND `FilterURL`.`SourceFeed_ID` = ?");
-							$stmt->bind_param('ii',$filter,$url);
-
-							$filter=strip_tags($_GET['filter']);
-							$url=strip_tags($arr[1]);
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter1 = strip_tags($_POST['f']['twitter1']);
+					if($twitter1 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter1;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter1, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
 							$stmt->execute();
-						}else include 'hacker.html';
-					}else include 'hacker.html';
-				}else include 'hacker.html';}
-			}
-			
-			else if($_GET['n']=='7'){
-				$twitteraccount=strip_tags($_POST['f']['twitter']);
-				$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitteraccount;
-				$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID) VALUES (?, ?, 120, ?)");
-				$userid = $_SESSION['user']['ID'];
-				$stmt->bind_param('ssi',$url, $twitteraccount, $userid);
-				$stmt->execute();
-
-				$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-				$stmt->bind_param('si',$url, $userid);
-				$stmt->execute();
-				$result=$stmt->get_result();
-				foreach($result as $row){
-					$sourcefeed=$row['ID'];
-					$file="./Caches/Cache".$sourcefeed.".txt";	
-					$filter=strip_tags($_GET['filter']);
-					$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
-					$stmt->bind_param('si',$file,$sourcefeed);
-					$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter2 = strip_tags($_POST['f']['twitter2']);
+					if($twitter2 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter2;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter2, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter3 = strip_tags($_POST['f']['twitter3']);
+					if($twitter3 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter3;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter3, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter4 = strip_tags($_POST['f']['twitter4']);
+					if($twitter4 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter4;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter4, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter5 = strip_tags($_POST['f']['twitter5']);
+					if($twitter5 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter5;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter5, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter6 = strip_tags($_POST['f']['twitter6']);
+					if($twitter6 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter6;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter6, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter7 = strip_tags($_POST['f']['twitter7']);
+					if($twitter7 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter7;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter7, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter8 = strip_tags($_POST['f']['twitter8']);
+					if($twitter8 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter8;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter8, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$twitter9 = strip_tags($_POST['f']['twitter9']);
+					if($twitter9 != ""){
+						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter9;
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$stmt->bind_param('ssii',$url, $twitter9, $userid, $row['ID']);
+						$stmt->execute();
+						
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$url, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row3){
+							$sourcefeed=$row3['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";	
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
 					
-					$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
-					$stmti->bind_param('ii',$filter,$sourcefeed);
-					$stmti->execute();
+					$fb0 = strip_tags($_POST['f']['fab0']);
+					if($fb0 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb0, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb0, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb0, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb1 = strip_tags($_POST['f']['fab1']);
+					if($fb1 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb1, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb1, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb1, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb2 = strip_tags($_POST['f']['fab2']);
+					if($fb2 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb2, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb2, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb2, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb3 = strip_tags($_POST['f']['fab3']);
+					if($fb3 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb3, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb3, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb3, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb4 = strip_tags($_POST['f']['fab4']);
+					if($fb4 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb4, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb4, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb4, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb5 = strip_tags($_POST['f']['fab5']);
+					if($fb5 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb5, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb5, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb5, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb6 = strip_tags($_POST['f']['fab6']);
+					if($fb6 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb6, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb6, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb6, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb7 = strip_tags($_POST['f']['fab7']);
+					if($fb7 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb7, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb7, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb7, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb8 = strip_tags($_POST['f']['fab8']);
+					if($fb8 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb8, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb8, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb8, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
+					$fb9 = strip_tags($_POST['f']['fab9']);
+					if($fb9 != ""){
+						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
+						$name = substr($fb9, 25);
+						$name = substr($name, 0, -1);
+						$stmt->bind_param('ssii',$fb9, $name, $userid, $row['ID']);
+						$stmt->execute();
+
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
+						$stmt->bind_param('si',$fb9, $userid);
+						$stmt->execute();
+						$result=$stmt->get_result();
+						foreach($result as $row4){
+							$sourcefeed=$row4['ID'];
+							$file="./Caches/Cache".$sourcefeed.".txt";
+							$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
+							$stmt->bind_param('si',$file,$sourcefeed);
+							$stmt->execute();
+							
+							$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
+							$stmti->bind_param('ii',$row['ID'],$sourcefeed);
+							$stmti->execute();
+						}
+					}
 				}
 			}
-			
-			else if($_GET['n']=='8'){
-				$facebook=strip_tags($_POST['f']['facebook']);
-				$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID) VALUES (?, ?, 120, ?)");
-				$userid = $_SESSION['user']['ID'];
-				$name = substr($facebook, 25);
-				$name = substr($name, 0, -1);
-				$stmt->bind_param('ssi',$facebook, $name, $userid);
-				$stmt->execute();
-
-				$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-				$stmt->bind_param('si',$facebook, $userid);
-				$stmt->execute();
-				$result=$stmt->get_result();
-				foreach($result as $row){
-					$sourcefeed=$row['ID'];
-					$file="./Caches/Cache".$sourcefeed.".txt";	
-					$filter=strip_tags($_GET['filter']);
-					$stmt=$mysqli->prepare("UPDATE SourceFeed SET CacheFile=? WHERE ID=?");
-					$stmt->bind_param('si',$file,$sourcefeed);
-					$stmt->execute();
-					
-					$stmti=$mysqli->prepare("INSERT INTO FilterURL (Filter_ID, SourceFeed_ID) VALUES(?, ?)");
-					$stmti->bind_param('ii',$filter,$sourcefeed);
-					$stmti->execute();
-				}
-			}
-			else include 'hacker.html';
+			if($_GET['n']=='2'){
+				echo $_GET['filter'];
 			}
 		}
 		
-		echo "<h1>Einstellungen für dieses Profil:</h1>";
+		echo "<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&n=1' method='post'>";
+		echo "<h1>Einstellungen für diesen Pressespiegel:</h1>";
+		echo "<h2>Ihre angelegten Filter:</h2>";?>	
+		<a style="float: right" class="help" onMouseOver="InfoBoxAnzeigen(event,
+		'Ein Pressespiegel besteht aus mehreren Filtern. Diese Filter können aus mehreren Schlüsselwörtern und Nachrichtendienstanbietern, sowie Twitteraccounts und Facebookseiten bestehen. Werden mehrere Schlüsselwörter in einem Filter angegeben, so müssen diese im durchsuchten Text zusammen auftreten. Soll nach unterschiedlichen Schlüsselwörtern, die nicht zusammen auftreten, gesucht werden, müssen mehrere Filter erstellt werden. Aus diesen Filtern stellt sich dann der Pressespiegel zusammen'
+		,-650,-30);" 
+		onMouseOut="InfoBoxAusblenden();" 
+		href="javascript:void(0)"> 
+		Hilfe 
+		</a>
+		<?php
+		echo '	<table>
+					<tr>
+						<th class="Filter"><strong>Suchwörter</strong></th>
+						<th class="Filter"><strong>Art der Suche</strong></th>
+						<th class="Filter"><strong>Invertiert</strong></th>
+						<th class="Filter"><strong>Anbieter</strong></th>
+						<th class="Filter"></th>
+					</tr>';
 
-
-		$stmt=$mysqli->prepare("SELECT * From Filter WHERE CustomFeed_ID=?");
+		$stmt=$mysqli->prepare("SELECT ID FROM Filter WHERE CustomFeed_ID=?");
 		$stmt->bind_param('s',$profile);
 		$profile=strip_tags($_GET['profile']);
 		$stmt->execute();
-		$result = $stmt->get_result();
-
-
+		$result = $stmt->get_result();;
+		
 		foreach($result as $row){
-			echo"
-			<div class=del2>
-					
-					<a href='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=4'>
-					<img src='delete.png' alt='-' width=30 height=30>
-					</a>
-					</div>
-			<details class='top'><summary>".$row['Name']."
-			</summary>
-			<ul><li><details class='bot'><summary>Schlagwörter</summary><ul>";
-
-
-
+			echo '<tr>';
+			$stmt2=$mysqli->prepare("SELECT * FROM FilterKeyword WHERE Filter_ID=?");
+			$stmt2->bind_param('i',$filterID);
+			$filterID = $row['ID'];
+			$stmt2->execute();
+			$result2 = $stmt2->get_result();
 			
-
-				$stmt=$mysqli->prepare("SELECT * FROM `FilterKeyword` WHERE Filter_ID=?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=$row['ID'];
-				$stmt->execute();
-				$result = $stmt->get_result();
-
-				foreach($result as $row3){
-					$serial_arr=urlencode(base64_encode(serialize(array($row3['Filter_ID'],$row3['Keyword'],$row3['SearchIndex'],$row3['Inverted']))));
-					
-					echo"<li><div";
-					if($row3['Inverted']=='1'){echo " class=invert";}else{echo " class=normal";}
-					echo ">".
-					$row3['Keyword']."</div><div class=del>
-					
-					<a href='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=5&a=".$serial_arr."'>
-					<img src='delete.png' alt='-' width=30 height=30>
-					</a>
-					</div></li><div class=additional>";
-					if($row3['Inverted']=='1'){echo "Invertiert: ";}else{echo "Normal: ";}
-					if($row3['SearchIndex']=='0'){echo "Titelsuche";}else if($row3['SearchIndex']=='1'){echo "Beschreibungssuche";}else if($row3['SearchIndex']=='2'){echo "Volltextsuche";}
-					
-					
-					echo"</div>";
-				}
-				echo "<div class=newW><p>Neu:</p><form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=2' method='post'><div class=newK>
-					<input type='text' name='f[key]' id='key' /> <input type='submit' name='submit' value='Anlegen' />
-
-					
-						
-					</div>
-					<div class=newOpt>
-					<label><input type='checkbox' name='f[not]' value='1'>Nicht </label><select name=f[searchindex] id=searchindex><option value=0>Titelsuche</option><option value=1>Beschreibungssuche</option><option selected='selected' value=2>Volltextsuche</option></select>
-					</div></form></div>";
-				echo "</ul></details></li><li><details class='bot'><summary>Anbieter</summary><ul>";
-
-
-
-				$stmt=$mysqli->prepare("SELECT * From SourceFeed INNER JOIN FilterURL ON FilterURL.SourceFeed_ID=SourceFeed.ID WHERE FilterURL.Filter_ID =?");
-				$stmt->bind_param('s',$filter);
-
-				$filter=$row['ID'];
-				$stmt->execute();
-				$result = $stmt->get_result();
-
-				foreach($result as $row2){
-					$serial_arr=urlencode(base64_encode(serialize(array($row2['Filter_ID'],$row2['SourceFeed_ID']))));
-					echo"<li>".$row2['Title']."
-					
-					<div class=del>
-					
-					<a href='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=6&a=".$serial_arr."'>
-					<img src='delete.png' alt='-' width=30 height=30>
-					</a>
-					</div></li>";
-				}
-				echo "<div class=newW><p>Neu:</p><div style=margin-left:40px;><form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=3' method='post'>
-				<select name='f[src]' id='src' /> ";
-
-				$SQL4="SELECT * FROM SourceFeed WHERE User_ID=0";
-				foreach($mysqli->query($SQL4) as $row3){
-				echo "<option value=".$row3['ID'].">".$row3['Title']."</option>";
-				}
-
-
-				echo "</select>
-				<input type='submit' name='submit' value='Anlegen' />
-
-				</form></div></div>
-				
-				<div class=newW>
-					<p>Twitter Account @:</p>
-					<div style=margin-left:40px;>
-					<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=7' method='post'>
-					<input type='text' name='f[twitter]' id='twitter'><input type='submit' name='submit' value='Anlegen'>
-					</form>
-					</div>
-				</div>
-				
-				<div class=newW>
-					<p>Facebook URL:</p>
-					<div style=margin-left:40px;>
-					<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=8' method='post'>
-					<input type='text' name='f[facebook]' id='facebook'><input type='submit' name='submit' value='Anlegen'>
-					</form>
-					</div>
-				</div>
-				";
-
+			echo '<td class="Filter">'; 
+			foreach($result2 as $row2){
+				echo $row2['Keyword']; echo '<br>';
+				$search = $row2['SearchIndex'];
+				$inverted =$row2['Inverted'];
+			}
+			echo '</td>';
+			if($search===2) $search="Volltextsuche";
+			if($search===1) $search="Beschreibungssuche";
+			if($search===0) $search="Titelsuche";
+			if($inverted===1) $inverted="Ja";
+			if($inverted===0) $inverted="Nein";
+			echo '<td class="Filter">'; echo $search; echo '</td>';
+			echo '<td class="Filter">'; echo $inverted; echo '</td>';
 			
-			echo "</ul></details></li></ul></details>";
+			$stmt3=$mysqli->prepare("SELECT SourceFeed_ID FROM FilterURL WHERE Filter_ID=?");
+			$stmt3->bind_param('i',$filterID);
+			$filterID = $row['ID'];
+			$stmt3->execute();
+			$result3 = $stmt3->get_result();
+			
+			echo '<td class="Filter">'; 
+			foreach($result3 as $row3){
+				$stmt4=$mysqli->prepare("SELECT Title FROM SourceFeed WHERE ID=?");
+				$stmt4->bind_param('i',$sourceID);
+				$sourceID= $row3['SourceFeed_ID'];
+				$stmt4->execute();
+				$result4 = $stmt4->get_result();
+					
+				foreach($result4 as $row4){
+					echo $row4['Title'];  echo '<br>';
+				}	
+			}
+			echo '</td>';
+			echo "	<td valign='middle' align='center' class='middle'>
+						<button type='button' id='b".$row['ID']."' onclick=deleteFilter(".$row['ID'].")>Löschen</buttton>
+						</form>
+					</td>";
+			echo '</tr>';
 		}
-		echo"
-		<div class=newW><p>Neuer Filter:</p><div class=newK><form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&n=1' method='post'>
-		<label for='pname'></label><input type='text' name='f[fname]' id='fname' ><input type='submit' name='submit' value='Anlegen'></div></div>
-
-
-		</form>";
-
-
-	}else include 'hacker.html';
-	}
+		echo '</table>';
+		
 	}else include 'hacker.html';
 }
 else include 'hacker.html';
 
 ?>
 
+<br>
+
+<div id="InfoBox" style="z-index:1; visibility:hidden;"> 
+<div id="BoxInnen"><span id="BoxInhalte"> </span></div> 
+</div>
+
+<script type="text/javascript" language="JavaScript">
+<!--
+var offsetx=20
+var offsety=0
+
+function deleteFilter(id){
+	$.ajax({
+                url: 'deleteFilter.php', // point to server-side PHP script 
+                dataType: 'text',  // what to expect back from the PHP script, if anything
+                cache: false,
+                contentType: false,
+                processData: true,
+                data: {'text': id}, 				
+                type: 'GET',
+                success: function(php_script_response){
+                    console.log(php_script_response); // display response from the PHP script, if any
+                }
+     });
+	 
+	 setTimeout(refresh, 100);
+}
+
+function refresh(){
+	window.location.reload(true);
+}
+
+function InfoBoxAusblenden() {
+      document.getElementById('InfoBox').style.visibility = "hidden";
+}
+
+function InfoBoxAnzeigen(e,Inhalte,offsetX,offsetY)
+{
+        if (offsetX) {offsetx=offsetX;} else {offsetx=20;}
+        if (offsetY) {offsety=offsetY;} else {offsety=0;}
+        var PositionX = 0;
+        var PositionY = 0;
+        if (!e) var e = window.event;
+        if (e.pageX || e.pageY)
+        {
+                PositionX = e.pageX;
+                PositionY = e.pageY;
+        }
+        else if (e.clientX || e.clientY)
+        {
+                PositionX = e.clientX + document.body.scrollLeft;
+                PositionY = e.clientY + document.body.scrollTop;
+        }
+        document.getElementById("BoxInhalte").innerHTML = Inhalte;
+        document.getElementById('InfoBox').style.left = (PositionX+offsetx)+"px";
+        document.getElementById('InfoBox').style.top = (PositionY+offsety)+"px";
+        document.getElementById('InfoBox').style.visibility = "visible";
+}
+// -->
+
+</script>
+
+
+<h2 style="margin-top: 20px" >Neuen Filter erstellen: </h2>
+
+
+<div class=newW>
+	<p>Suchwort :</p>
+	<div style=margin-left:40px;>
+		<input type='text' name='f[such]' id='such'>
+		<button type='button' name='such' onclick="add()">Hinzufügen</button>
+<p>Hinzugefügte Suchwörter: </p>
+<input type="text" id='word0' name='f[word0]' class="element" style="display:none" readonly><button type="button" name="sb0" onclick="remove('sb0')" style="display:none" id="sb0"></button><br>
+<input type="text" id='word1' name='f[word1]' class="element" style="display:none" readonly><button type="button" name="sb1" onclick="remove('sb1')" style="display:none" id="sb1"></button><br>
+<input type="text" id='word2' name='f[word2]' class="element" style="display:none" readonly><button type="button" name="sb2" onclick="remove('sb2')" style="display:none" id="sb2"></button><br>
+<input type="text" id='word3' name='f[word3]' class="element" style="display:none" readonly><button type="button" name="sb3" onclick="remove('sb3')" style="display:none" id="sb3"></button><br>
+<input type="text" id='word4' name='f[word4]' class="element" style="display:none" readonly><button type="button" name="sb4" onclick="remove('sb4')" style="display:none" id="sb4"></button><br>
+<input type="text" id='word5' name='f[word5]' class="element" style="display:none" readonly><button type="button" name="sb5" onclick="remove('sb5')" style="display:none" id="sb5"></button><br>
+<input type="text" id='word6' name='f[word6]' class="element" style="display:none" readonly><button type="button" name="sb6" onclick="remove('sb6')" style="display:none" id="sb6"></button><br>
+<input type="text" id='word7' name='f[word7]' class="element" style="display:none" readonly><button type="button" name="sb7" onclick="remove('sb7')" style="display:none" id="sb7"></button><br>
+<input type="text" id='word8' name='f[word8]' class="element" style="display:none" readonly><button type="button" name="sb8" onclick="remove('sb8')" style="display:none" id="sb8"></button><br>
+<input type="text" id='word9' name='f[word9]' class="element" style="display:none" readonly><button type="button" name="sb9" onclick="remove('sb9')" style="display:none" id="sb9"></button><br>
+
+	</div>
+</div>		
+
+<script language="JavaScript">
+
+var i = 0;
+var word = "word";
+var sb = "sb";
+
+var deleteValues = new Array(	10,
+								10, 
+								10,
+								10,
+								10,
+								10,
+								10,
+								10,
+								10,
+								10)
+
+function add(){
+	savei = i;
+	if(i>-1 && i<10){
+		for(la = 9; la > -1; la--){
+			if(deleteValues[la] != 10){
+				i = la;
+			}
+		}
+		var id = word+i;
+		var button = sb+i;
+		var text = document.getElementById("such");
+		var string = document.getElementById(id);
+		
+		if(text.value===""){
+			alert("Textfeld darf nicht leer sein!");
+		}
+		else{
+			var but = document.getElementById(button);
+			string.removeAttribute('style');
+			but.removeAttribute('style');
+			but.innerHTML = "Entfernen";
+			string.value = text.value;
+			text.value = "";
+			deleteValues[i]=10;
+			i = savei;
+			i++;
+		}
+	}
+	
+	else{
+		alert("Es sind nicht mehr als 10 Suchwörter möglich!");
+	}
+}
+
+function remove(id){
+	var button = document.getElementById(id);
+	var number = id.charAt(2);
+	i--;
+	var id2 = word+number;
+	var textfeld = document.getElementById(id2);
+	textfeld.innerHTML = "";
+	textfeld.style.display = "none";
+	id2 = sb+number;
+	var button = document.getElementById(id2);
+	button.innerHTML = "";
+	button.style.display = "none";
+	deleteValues[number] = number;
+}
+</script>
+
+<div class=newW>
+<p> Art der Suche: </p>
+<a style="float: right" class="help" onMouseOver="InfoBoxAnzeigen(event,
+'Hier können Sie die Art festlegen, wie nach den Schlüsselwörtern gesucht werden soll. Bei der Titelsuche wird nach dem Schlüsselwort nur im Titel gesucht, bei der Beschreibungssuche in der Beschreibung des Artikels und im Titel und eine Volltextsuche durchsucht den ganzen Artikel.',
+-650,-30);" 
+onMouseOut="InfoBoxAusblenden();" 
+href="javascript:void(0)"> 
+Hilfe
+</a>
+    <input type="radio" id="vt" name="Suchart" value="2" checked>
+    <label for="vt" class="radio"> Volltextsuche</label><br> 
+    <input type="radio" id="bs" name="Suchart" value="1">
+    <label for="bs" class="radio"> Beschreibugngssuche</label><br> 
+    <input type="radio" id="ti" name="Suchart" value="0">
+    <label for="ti" class="radio"> Titelsuche</label> 
+ 
+</div>
+
+<div class=newW>
+<p> Invertiert: </p>
+<a style="float: right" class="help" onMouseOver="InfoBoxAnzeigen(event,
+'Wenn Sie die Option invertiert wählen, dann werden Ihnen alle Artikel bereitgestellt, welche das Schlüsselwort NICHT enthalten.',
+-650,-30);" 
+onMouseOut="InfoBoxAusblenden();" 
+href="javascript:void(0)"> 
+Hilfe
+</a>
+ <fieldset>
+    <input type="radio" id="no" name="inv" value="0" checked>
+    <label for="no" class="radio"> Nein</label><br> 
+    <input type="radio" id="yes" name="inv" value="1">
+    <label for="yes" class="radio"> Ja</label> 
+  </fieldset>
+</div>
+
+<div class=newW>
+<p>Nachrichtendienstanbieter: </p>
+<div style=margin-left:40px;>
+<?php
+	$SQL4="SELECT * FROM SourceFeed WHERE User_ID=0";
+	foreach($mysqli->query($SQL4) as $row3){
+		$title = $row3['Title'];
+		$title = str_replace(' ', '-', $title);
+		echo "<p class='Titel' >".$row3['Title']."</p>";
+		echo "<input type='checkbox' id='".$row3['Title']."' name='".$title."' value=".$row3['ID'].">";
+	}
+				
+?>
+</div>
+</div>	
+
+<div class=newW>
+					<p>Twitter Account @:</p>
+					<a style="float: right" class="help" onMouseOver="InfoBoxAnzeigen(event,
+'Geben Sie hier den Namen des Twitteraccounts ein, dem Sie folgen möchten. Eingabe ohne @ Zeichen!'
+					,-650,-30);" 
+onMouseOut="InfoBoxAusblenden();" 
+href="javascript:void(0)"> 
+Hilfe
+</a>
+					<div style=margin-left:40px;>
+					<input type='text' name='f[twitter]' id='twitter'>
+					<button type='button' name='twitter' onclick="addtwitter()">Hinzufügen</button>
+					
+				
+				<p>Hinzugefügte Twitteraccounts: </p>
+<input type="text" id='twitter0' name='f[twitter0]' class="element" style="display:none" readonly><button type="button" name="tb0" onclick="removet('tb0')" style="display:none" id="tb0"></button><br>
+<input type="text" id='twitter1' name='f[twitter1]' class="element" style="display:none" readonly><button type="button" name="tb1" onclick="removet('tb1')" style="display:none" id="tb1"></button><br>
+<input type="text" id='twitter2' name='f[twitter2]' class="element" style="display:none" readonly><button type="button" name="tb2" onclick="removet('tb2')" style="display:none" id="tb2"></button><br>
+<input type="text" id='twitter3' name='f[twitter3]' class="element" style="display:none" readonly><button type="button" name="tb3" onclick="removet('tb3')" style="display:none" id="tb3"></button><br>
+<input type="text" id='twitter4' name='f[twitter4]' class="element" style="display:none" readonly><button type="button" name="tb4" onclick="removet('tb4')" style="display:none" id="tb4"></button><br>
+<input type="text" id='twitter5' name='f[twitter5]' class="element" style="display:none" readonly><button type="button" name="tb5" onclick="removet('tb5')" style="display:none" id="tb5"></button><br>
+<input type="text" id='twitter6' name='f[twitter6]' class="element" style="display:none" readonly><button type="button" name="tb6" onclick="removet('tb6')" style="display:none" id="tb6"></button><br>
+<input type="text" id='twitter7' name='f[twitter7]' class="element" style="display:none" readonly><button type="button" name="tb7" onclick="removet('tb7')" style="display:none" id="tb7"></button><br>
+<input type="text" id='twitter8' name='f[twitter8]' class="element" style="display:none" readonly><button type="button" name="tb8" onclick="removet('tb8')" style="display:none" id="tb8"></button><br>
+<input type="text" id='twitter9' name='f[twitter9]' class="element" style="display:none" readonly><button type="button" name="tb9" onclick="removet('tb9')" style="display:none" id="tb9"></button><br>
+
+	</div>
+</div>	
+
+<script language="JavaScript">
+
+var j = 0;
+var twitter = "twitter";
+var tb = "tb";
+
+var deleteValuest = new Array(	10,
+								10, 
+								10,
+								10,
+								10,
+								10,
+								10,
+								10,
+								10,
+								10)
+
+function addtwitter(){
+	savej = j;
+	if(j>-1 && j<10){
+		for(lb = 9; lb > -1; lb--){
+			if(deleteValuest[lb] != 10){
+				j = lb;
+			}
+		}
+		var id = twitter+j;
+		var button = tb+j;
+		var text = document.getElementById("twitter"); 
+		textcheck = text.value;
+		if (textcheck.search(/^[a-zA-Z0-9_]+$/) == -1)
+		{
+			  alert("Dies scheint kein korrekter Twitter-Account zu sein!");
+		}
+		else{
+			var but = document.getElementById(button);
+			var string = document.getElementById(id);
+			but.removeAttribute('style');
+			string.removeAttribute('style');
+			but.innerHTML = "Entfernen";
+			string.value = text.value;
+			text.value = "";
+			deleteValuest[j]=10;
+			j = savej;
+			j++;
+		}
+	}
+	else{
+		alert("Es sind nicht mehr als 10 Twitteraccounts möglich!");
+	}
+}
+
+function removet(id){
+	var button = document.getElementById(id);
+	var number = id.charAt(2);
+	j--;
+	var id2 = twitter+number;
+	var textfeld = document.getElementById(id2);
+	textfeld.innerHTML = "";
+	textfeld.style.display = "none";
+	id2 = tb+number;
+	var button = document.getElementById(id2);
+	button.innerHTML = "";
+	button.style.display = "none";
+	
+	deleteValuest[number] = number;
+}
+</script>
+
+<div class=newW>
+					<p>Facebook URL:</p>
+					<a style="float: right" class="help" onMouseOver="InfoBoxAnzeigen(event,
+'Geben Sie hier den vollständigen Link der Facebook-Seite an, der Sie folgen möchten. Beispiel: https://www.facebook.com/FacebookDeutschland/ !',
+-650,-30);" 
+onMouseOut="InfoBoxAusblenden();" 
+href="javascript:void(0)"> 
+Hilfe
+</a>
+					<div style=margin-left:40px;>
+					<input type='text' name='f[facebook]' id='facebook'>
+					<button type='button' name='facebook' onclick="addfb()">Hinzufügen</button>
+					
+					
+				<p>Hinzugefügte Facebook-URL's: </p>
+<input type="text" id='fab0' name='f[fab0]' class="elementf" style="display:none" readonly><button type="button" name="fb0" onclick="removef('fb0')" style="display:none" id="fb0"></button><br>
+<input type="text" id='fab1' name='f[fab1]' class="elementf" style="display:none" readonly><button type="button" name="fb1" onclick="removef('fb1')" style="display:none" id="fb1"></button><br>
+<input type="text" id='fab2' name='f[fab2]' class="elementf" style="display:none" readonly><button type="button" name="fb2" onclick="removef('fb2')" style="display:none" id="fb2"></button><br>
+<input type="text" id='fab3' name='f[fab3]' class="elementf" style="display:none" readonly><button type="button" name="fb3" onclick="removef('fb3')" style="display:none" id="fb3"></button><br>
+<input type="text" id='fab4' name='f[fab4]' class="elementf" style="display:none" readonly><button type="button" name="fb4" onclick="removef('fb4')" style="display:none" id="fb4"></button><br>
+<input type="text" id='fab5' name='f[fab5]' class="elementf" style="display:none" readonly><button type="button" name="fb5" onclick="removef('fb5')" style="display:none" id="fb5"></button><br>
+<input type="text" id='fab6' name='f[fab6]' class="elementf" style="display:none" readonly><button type="button" name="fb6" onclick="removef('fb6')" style="display:none" id="fb6"></button><br>
+<input type="text" id='fab7' name='f[fab7]' class="elementf" style="display:none" readonly><button type="button" name="fb7" onclick="removef('fb7')" style="display:none" id="fb7"></button><br>
+<input type="text" id='fab8' name='f[fab8]' class="elementf" style="display:none" readonly><button type="button" name="fb8" onclick="removef('fb8')" style="display:none" id="fb8"></button><br>
+<input type="text" id='fab9' name='f[fab9]' class="elementf" style="display:none" readonly><button type="button" name="fb9" onclick="removef('fb9')" style="display:none" id="fb9"></button><br>	
+					
+					</div>
+				</div>				
+
+<script language="JavaScript">
+
+var k = 0;
+var fab = "fab";
+var fb = "fb";
+
+var deleteValuesf = new Array(	10,
+								10, 
+								10,
+								10,
+								10,
+								10,
+								10,
+								10,
+								10,
+								10)
+								
+function addfb(){
+	savek = k;
+	if(k>-1 && k<10){
+		for(lc = 9; lc > -1; lc--){
+			if(deleteValuesf[lc] != 10){
+				k = lc;
+			}
+		}
+		var id = fab+k;
+		var button = fb+k;
+		var text = document.getElementById("facebook");
+		var textcheck = text.value;
+		textcheck = textcheck.substring(0, 25);
+		if(textcheck != "https://www.facebook.com/"){
+			alert("Dies scheint kein korrekter Facebook-Link zu sein!")
+		}
+		else{
+			var but = document.getElementById(button);
+			var string = document.getElementById(id);
+			string.value = text.value;
+			but.removeAttribute('style');
+			string.removeAttribute('style');
+			but.innerHTML = "Entfernen";
+			text.value = "";
+			deleteValuesf[k]=10;		
+			k = savek;
+			k++;
+		}
+	}
+	else{
+		alert("Es sind nicht mehr als 10 Facebook-URL's möglich!");
+	}
+}
+
+function removef(id){
+	var button = document.getElementById(id);
+	var number = id.charAt(2);
+	k--;
+	var id2 = fab+number;
+	var textfeld = document.getElementById(id2);
+	textfeld.innerHTML = "";
+	textfeld.style.display = "none";
+	id2 = fb+number;
+	var button = document.getElementById(id2);
+	button.innerHTML = "";
+	button.style.display = "none";
+	
+	deleteValuesf[number] = number;
+}
+</script>
+
+<input type='submit' name='submit' value='Filter anlegen' />
+</form>
 
 
