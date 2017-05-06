@@ -35,6 +35,111 @@ input[type=submit]
         color: #fff;
 }
 
+input[type="radio"]{
+	font-size: 20px;
+	width: 100px;
+}
+
+.radio{
+	font-size: 20px;
+}
+
+
+.help{
+	font-family: 'Open Sans', sans-serif;
+	font-size:12px;
+	color: white;
+	outline:0 ;
+	border:1;
+	border-radius:5px;
+	width:auto;
+	padding: 1px 6px;
+	line-height:25px;
+	text-shadow:none;
+	cursor:pointer;
+	box-shadow: none;
+	background: #CB2323;
+}
+
+#InfoBox { visibility: hidden; 
+position: absolute; 
+top: 10px; 
+left: 10px; 
+z-index: 1; /* diese Angaben können Sie anpassen */ 
+width: 600px; 
+background-color: #FDFEFF; 
+border: 4px solid #CB2323; 
+} 
+
+/* weitere Box in der Info-Box für padding */ 
+#BoxInnen { 
+padding: 15px; 
+} 
+
+/* Formatierung Texte in der Info-Box */ 
+#BoxInhalte { 
+font-family: Verdana,Arial,Helvetica,sans-serif; 
+font-size: 11px; 
+color: #5F5F5F; 
+line-height: 130%; 
+} 
+
+/* Beispiel h1 Überschrift */ 
+#BoxInhalte h1 { 
+font-family: Verdana,Arial,Helvetica,sans-serif; 
+font-size: 14px; 
+color: #0090E0; 
+}
+
+button
+{
+		font-family: 'Open Sans', sans-serif;
+        font-size:16px;
+        outline:0 ;
+        border:1;
+        border-radius:5px;
+        width:auto;
+        padding: 5px 18px;
+        line-height:25px;
+        text-shadow:none;
+        cursor:pointer;
+        box-shadow: none;
+        background: #202020;
+        color: #fff;
+}
+
+.element {
+	width: 200px;
+	margin-right: 50px;
+	display: inline-block;
+	margin-left: 30px;
+}
+
+.elementf {
+	width: 600px;
+	margin-right: 50px;
+	display: inline-block;
+	margin-left: 30px;
+}
+
+input[type="checkbox"]{
+	font-family: 'Open Sans', sans-serif;
+	font-size:16px;
+	padding: 0px;
+	margin-right: 40px;
+	outline:0 ;
+	border:1;
+	width: 30px;
+	min-width:30px;
+	background: #E9E4D6;
+	border-radius:5px;
+}
+
+.Titel{
+	width: 200px;
+	min-width: 200px;
+	display: inline-block;
+}
 select {
   
   width:250px;
@@ -250,6 +355,29 @@ nav ul li:hover
 }
 
 
+th{
+	font-size: 20px;
+	text-align: left;
+}
+.Filter{
+	margin-right: 50px;
+	border: 1px solid black;
+	min-width: 200px;
+	max-width: 350px;
+	font-size: 18px;
+	padding-bottom: 15px;
+}
+
+.middle{
+	margin-right: 50px;
+	border: 1px solid black;
+	min-width: 200px;
+	max-width: 350px;
+	font-size: 18px;
+	padding-bottom: 15px;
+	text-align: center;
+	valign: middle;
+}
 
 profiles
 {
@@ -495,14 +623,26 @@ DETAILS[open] SUMMARY ~ *
 }
 
 .newW {
-	width:400px;
-	margin-left:40px;
+	width:900px;
+	margin-left:0px;
 	margin-top:20px;
 	padding:10px;
 	border: 2px dotted grey;
 	border-radius:0px 30px 0px 30px;
 }
+.newW2{	
+	width:400px;
+	margin-left:0px;
+	margin-top:20px;
+	padding:10px;
+	border: 2px dotted grey;
+	border-radius:0px 30px 0px 30px;
+	display: inline-block;
+}
 .newW p{
+	font-size:20px;
+}
+.newW2 p{
 	font-size:20px;
 }
 .newK{
@@ -773,6 +913,20 @@ footer .wrapper .column h4
         {
                 padding: 1px 14px;
         }
+		submit{
+			padding: 1px 14px;
+                font-size:14px;
+		}
+		input[type="checkbox"]{
+			font-family: 'Open Sans', sans-serif;
+			font-size:16px;
+			padding: 0px;
+			outline:0 ;
+			border:1;
+			width:0px;
+			background: #E9E4D6;
+			border-radius:5px;
+		}
 		.content{
 			width:700px;
 		}
