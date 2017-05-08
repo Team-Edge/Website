@@ -567,15 +567,29 @@ if(isset($_SESSION['login'])){
 							$stmti->execute();
 						}
 					}
+					shell_exec("cd /var/www ; java -jar newsFeedBackend.jar Filterupdate ".$row["ID"]);
 				}
+				
 			}
-			if($_GET['n']=='2'){
-				echo $_GET['filter'];
-			}
+			
+		}
+		echo"
+		<div style='float:right;'>
+		<a href='index.php'><img src='pfeil_links.png' width='150px' height='150px'></a>
+		<a href='index.php?click=articles&profile=".$_GET['profile']."'><img src='pfeil_rechts.png' width='	150px' height='150px'></a>
+		</div>
+		
+		";
+		$stmt=$mysqli->prepare("SELECT Name FROM CustomFeed WHERE ID=?");
+		$stmt->bind_param('i',$pid);
+		$pid=$_GET['profile'];
+		$stmt->execute();
+		$result=$stmt->get_result();
+		foreach($result as $row){
+		echo "<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&n=1' method='post'>";
+		echo "<h1>Einstellungen für Ihr Profil ".$row['Name'].":</h1>";
 		}
 		
-		echo "<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&n=1' method='post'>";
-		echo "<h1>Einstellungen für diesen Pressespiegel:</h1>";
 		echo "<h2>Ihre angelegten Filter:</h2>";?>	
 		<a style="float: right" class="help" onMouseOver="InfoBoxAnzeigen(event,
 		'Ein Pressespiegel besteht aus mehreren Filtern. Diese Filter können aus mehreren Schlüsselwörtern und Nachrichtendienstanbietern, sowie Twitteraccounts und Facebookseiten bestehen. Werden mehrere Schlüsselwörter in einem Filter angegeben, so müssen diese im durchsuchten Text zusammen auftreten. Soll nach unterschiedlichen Schlüsselwörtern, die nicht zusammen auftreten, gesucht werden, müssen mehrere Filter erstellt werden. Aus diesen Filtern stellt sich dann der Pressespiegel zusammen'
@@ -609,6 +623,8 @@ if(isset($_SESSION['login'])){
 			$result2 = $stmt2->get_result();
 			
 			echo '<td class="Filter">'; 
+			$search="";
+			$inverted="";
 			foreach($result2 as $row2){
 				echo $row2['Keyword']; echo '<br>';
 				$search = $row2['SearchIndex'];

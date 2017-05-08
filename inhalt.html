@@ -19,7 +19,71 @@ $UID=strip_tags($_SESSION['user']['ID']);
 $stmt->execute();
 
 }
+
+if(isset($_GET['deluser'])){
+
+	$stmt = $mysqli->prepare("DELETE FROM Org_User WHERE User_ID=?");
+	$stmt->bind_param("i", $ID);
+	$ID = strip_tags($_GET['deluser']);
+	$stmt->execute();
+
+}
 if(isset($_GET['n'])){
+
+if($_GET['n']=='3'){
+	$name = $_POST['benutzer'];
+	if($name==""){
+		echo '<script type="text/javascript" language="Javascript">  
+		alert("Der Benutzername darf nicht leer sein!") 
+		</script>';
+	}
+	
+	$stmt=$mysqli->prepare("SELECT ID FROM User WHERE username=?");
+	$stmt->bind_param("s", $name);
+	$name = $_POST['benutzer'];
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows === 0){
+		echo '<script type="text/javascript" language="Javascript">  
+		alert("Der Benutzername ist nicht vorhanden!") 
+		</script>';
+	}
+	else{
+			foreach($result as $row){
+			$stmt2=$mysqli->prepare("SELECT * FROM Org_User WHERE User_ID=?");
+			$stmt2->bind_param("i", $user);
+			$user = $row['ID'];
+			$stmt2->execute();
+			$result2 = $stmt2->get_result();
+			
+			if($result2->num_rows === 1){
+				echo '<script type="text/javascript" language="Javascript">  
+				alert("Der Benutzer wurde schon zu einer Organisation hinzugefügt!") 
+				</script>';
+			}
+			else{
+				$stmt=$mysqli->prepare("INSERT INTO Org_User (Org_ID, User_ID) Values(?,?)");
+				$stmt->bind_param("ii", $org, $user);
+				
+					$stmt2=$mysqli->prepare("SELECT ID FROM User WHERE username=?");
+					$stmt2->bind_param("s", $uname);
+					$uname=strip_tags($_SESSION['user']['username']);
+					$stmt2->execute();
+					$result2 = $stmt2->get_result();
+					foreach($result2 as $row2){
+						$org = $row2['ID'];
+					}
+				
+				$stmt3=$mysqli->prepare("UPDATE User SET Organisations_ID=? WHERE ID=?");
+				$stmt3->bind_param("ii", $org, $user);
+				
+				$user = $row['ID'];
+				$stmt->execute();
+				$stmt3->execute();
+			}
+		}
+	}
+}
 
 if($_GET['n']=='2'){
 include("../../zugriff.php");
@@ -32,10 +96,20 @@ $uname=strip_tags($_SESSION['user']['username']);
 $pname=strip_tags($_POST['f']['pname']);
 $stmt->execute();
 
+$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.ID=?");
+$stmt->bind_param('s',$uname);
+
+
+$uname=strip_tags($_SESSION['user']['ID']);
+$stmt->execute();
+$result = $stmt->get_result();
+foreach($result as $row){
+header("Location: index.php?click=settings2&profile=".$row['ID']);
+}
 }
 }
 
-$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE CustomFeed.`User_ID`=User.`ID` AND User.ID=?");
+$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE (CustomFeed.`User_ID`=User.`ID` AND User.ID=?)");
 $stmt->bind_param('s',$uname);
 
 
@@ -89,6 +163,76 @@ echo "<a href='index.php?n=1'><li><p>Neues Profil anlegen...</p></li></a>
 ";
 }
 
+
+
+$stmt=$mysqli->prepare("SELECT * FROM User WHERE username=?");
+$stmt->bind_param("s", $uname);
+$uname=strip_tags($_SESSION['user']['username']);
+$stmt->execute();
+$result= $stmt->get_result();
+foreach($result as $row){
+
+	$OID = $row['Organisations_ID'];
+	if($OID != 0){
+		echo "<h2>Ihre Organisationsprofile: </h2>";
+		$stmt=$mysqli->prepare("SELECT * FROM CustomFeed WHERE User_ID=?");
+		$stmt->bind_param("i",$OID);
+		$stmt->execute();
+		$result2 = $stmt->get_result();
+		foreach($result2 as $row2){
+			
+			echo "
+			<profiles>
+			<ul>
+			";
+			$SQL2="SELECT count(*) as cnt FROM CustomFeedEntry, Filter WHERE Filter.ID=CustomFeedEntry.Filter_ID AND Filter.CustomFeed_ID=".$row2['ID'];
+			foreach($mysqli->query($SQL2) as $cnt){
+			echo "<div style=position:relative;>
+			<a href='index.php?click=articles&profile=".$row2['ID']."'>
+			<li>
+			<div style=position:relative><pp>".$row2['Name']." (".$cnt['cnt'].")</pp></div></li></a>
+			</div>
+			";
+
+			}
+		}
+	}
+	
+	$org = $row['Organisation'];
+	$id  = $row['ID'];
+}
+
+if($org==1){
+	echo "<br><h2>Ihre hinzugefügten Benutzer zur Organisation: </h2>";
+	
+	$stmt = $mysqli->prepare("SELECT * FROM Org_User WHERE Org_ID=?");
+	$stmt->bind_param("i", $id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	foreach($result as $row){
+		$stmt = $mysqli->prepare("SELECT * FROM User WHERE ID=?");
+		$stmt->bind_param("i", $userid);
+		$userid = $row['User_ID'];
+		$stmt->execute();
+		$result2 = $stmt->get_result();
+		foreach($result2 as $row2){
+			echo	"<div style=position:relative;>
+			<profiles>
+					<ul>
+					<li><p>".$row2['username']."</p>
+					<div id='del'><a href='index.php?deluser=".$row2['ID']."'><img src='delete.png' alt='Delete' width=30px height=30px></a></div>
+					</li>
+					</ul>
+					</profiles></div>";
+		}
+	}
+	
+	echo "<br><h2>Neuen Benutzer hinzufügen: </h2>";
+	echo "	<form name='form' action='index.php?n=3' method='post'>
+			<input type='text' id='benutzer' name='benutzer'>
+			<input type='submit' id='go' name='go' value='Hinzufügen'>
+			</form>";
+}
 
 }
 else{

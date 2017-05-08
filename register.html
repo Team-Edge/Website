@@ -20,21 +20,29 @@
 				$_POST['f']['password'],
 				'$2a$10$' . $salt
 			);
- 
+			
+			$org = 0;
+			
+			if(isset($_POST['yes'])){
+				if($_POST['yes']==1){
+					$org = 1;
+				}
+			}
 			
 			include("../../zugriff.php");
 			if ($mysqli->connect_error) {
 				$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 			}
 			$query = sprintf(
-				"INSERT INTO User (username, password, mail)
-				SELECT * FROM (SELECT '%s', '%s', '%s') as new_user
+				"INSERT INTO User (username, password, mail, Organisation)
+				SELECT * FROM (SELECT '%s', '%s', '%s', '%s') as new_user
 				WHERE NOT EXISTS (
 					SELECT username FROM User WHERE username = '%s'
 				) LIMIT 1;",
 				$mysqli->real_escape_string($_POST['f']['username']),
 				$mysqli->real_escape_string($_POST['f']['password']),
 				$mysqli->real_escape_string($_POST['f']['mail']),
+				$mysqli->real_escape_string($org),
 				$mysqli->real_escape_string($_POST['f']['username'])
 			);
 			$mysqli->query($query);
@@ -60,6 +68,8 @@
 	if (isset($message['notice'])): ?>
 			<p class="notice"><legend>Hinweis</legend><?php echo $message['notice'] ?></p>
 <?php endif; ?>
+			
+			<label for="organisation">Organisation</label><input type='checkbox' id='yes' name='yes' value="1">
 			
 			<p>
 			<table>

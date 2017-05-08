@@ -143,6 +143,7 @@ else{
 	 case 'ch_pwd':include('ch_pwd.html');break;
 	  case 'delete':include('delete.html');break;
 	   case 'newpw': include('newpw.html');break;
+	   case 'archiv': include('archiv.html');break;
      default: include('inhalt.html');
    }  
    
