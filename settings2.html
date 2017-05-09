@@ -863,7 +863,8 @@ Hilfe
 </div>
 
 <div class=newW>
-<p>Nachrichtendienstanbieter: </p>
+<p class='org'>Nachrichtendienstanbieter: </p>
+<button type="button" name="select" onclick="select2()" id="select" class="select">Alle selektieren</button>
 <div style=margin-left:40px;>
 <?php
 	$SQL4="SELECT * FROM SourceFeed WHERE User_ID=0";
@@ -871,7 +872,7 @@ Hilfe
 		$title = $row3['Title'];
 		$title = str_replace(' ', '-', $title);
 		echo "<p class='Titel' >".$row3['Title']."</p>";
-		echo "<input type='checkbox' id='".$row3['Title']."' name='".$title."' value=".$row3['ID'].">";
+		echo "<input type='checkbox' id='".$row3['ID']."' name='".$title."' value=".$row3['ID'].">";
 	}
 				
 ?>
@@ -912,6 +913,20 @@ Hilfe
 var j = 0;
 var twitter = "twitter";
 var tb = "tb";
+
+var is_selected = false;
+
+function select2(){
+
+	for(var zaehler=1; zaehler<=30; zaehler++){
+		var checkbox = document.getElementById(zaehler);
+		if(checkbox != null) checkbox.checked = !is_selected;
+	}
+	is_selected = !is_selected;
+	if(is_selected) document.getElementById('select').innerHTML = "Alle deselektieren";
+	else document.getElementById('select').innerHTML = "Alle selektieren";
+	
+}
 
 var deleteValuest = new Array(	10,
 								10, 

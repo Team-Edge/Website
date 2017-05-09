@@ -108,6 +108,11 @@ button
         color: #fff;
 }
 
+.select{
+	font-size:12px;
+	padding: 2px 6px;
+}
+
 .element {
 	width: 200px;
 	margin-right: 50px;
@@ -140,6 +145,17 @@ input[type="checkbox"]{
 	min-width: 200px;
 	display: inline-block;
 }
+
+.org{
+	display: inline-block;
+	margin-right: 470px;
+}
+
+.italic{
+	font-style: italic;
+	display: inline-block;
+}
+
 select {
   
   width:250px;

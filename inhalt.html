@@ -26,9 +26,26 @@ if(isset($_GET['deluser'])){
 	$stmt->bind_param("i", $ID);
 	$ID = strip_tags($_GET['deluser']);
 	$stmt->execute();
-
+	
+	
+	$stmt=$mysqli->prepare("UPDATE User SET Organisations_ID=0 WHERE ID=?");
+	$stmt->bind_param("i",$ID);
+	$ID = strip_tags($_GET['deluser']);
+	$stmt->execute();
 }
 if(isset($_GET['n'])){
+
+if($_GET['n']=='4'){
+	$stmt=$mysqli->prepare("UPDATE User SET Organisations_ID=0 WHERE ID=?");
+	$stmt->bind_param("i",$uname);
+	$uname=strip_tags($_SESSION['user']['ID']);
+	$stmt->execute();
+	
+	$stmt=$mysqli->prepare("DELETE FROM Org_User WHERE User_ID=?");
+	$stmt->bind_param("i",$uname);
+	$uname=strip_tags($_SESSION['user']['ID']);
+	$stmt->execute();
+}
 
 if($_GET['n']=='3'){
 	$name = $_POST['benutzer'];
@@ -38,7 +55,7 @@ if($_GET['n']=='3'){
 		</script>';
 	}
 	
-	$stmt=$mysqli->prepare("SELECT ID FROM User WHERE username=?");
+	$stmt=$mysqli->prepare("SELECT ID, Organisation FROM User WHERE username=?");
 	$stmt->bind_param("s", $name);
 	$name = $_POST['benutzer'];
 	$stmt->execute();
@@ -49,37 +66,45 @@ if($_GET['n']=='3'){
 		</script>';
 	}
 	else{
-			foreach($result as $row){
-			$stmt2=$mysqli->prepare("SELECT * FROM Org_User WHERE User_ID=?");
-			$stmt2->bind_param("i", $user);
-			$user = $row['ID'];
-			$stmt2->execute();
-			$result2 = $stmt2->get_result();
-			
-			if($result2->num_rows === 1){
+		foreach($result as $row){
+			if($row['Organisation']==1){
 				echo '<script type="text/javascript" language="Javascript">  
-				alert("Der Benutzer wurde schon zu einer Organisation hinzugefügt!") 
+				alert("Der Benutzer ist eine Organisation. Er kann nicht hinzugefügt werden!") 
 				</script>';
 			}
 			else{
-				$stmt=$mysqli->prepare("INSERT INTO Org_User (Org_ID, User_ID) Values(?,?)");
-				$stmt->bind_param("ii", $org, $user);
-				
-					$stmt2=$mysqli->prepare("SELECT ID FROM User WHERE username=?");
-					$stmt2->bind_param("s", $uname);
-					$uname=strip_tags($_SESSION['user']['username']);
-					$stmt2->execute();
-					$result2 = $stmt2->get_result();
-					foreach($result2 as $row2){
-						$org = $row2['ID'];
-					}
-				
-				$stmt3=$mysqli->prepare("UPDATE User SET Organisations_ID=? WHERE ID=?");
-				$stmt3->bind_param("ii", $org, $user);
-				
+			
+				$stmt2=$mysqli->prepare("SELECT * FROM Org_User WHERE User_ID=?");
+				$stmt2->bind_param("i", $user);
 				$user = $row['ID'];
-				$stmt->execute();
-				$stmt3->execute();
+				$stmt2->execute();
+				$result2 = $stmt2->get_result();
+				
+				if($result2->num_rows === 1){
+					echo '<script type="text/javascript" language="Javascript">  
+					alert("Der Benutzer wurde schon zu einer Organisation hinzugefügt!") 
+					</script>';
+				}
+				else{
+					$stmt=$mysqli->prepare("INSERT INTO Org_User (Org_ID, User_ID) Values(?,?)");
+					$stmt->bind_param("ii", $org, $user);
+					
+						$stmt2=$mysqli->prepare("SELECT ID FROM User WHERE username=?");
+						$stmt2->bind_param("s", $uname);
+						$uname=strip_tags($_SESSION['user']['username']);
+						$stmt2->execute();
+						$result2 = $stmt2->get_result();
+						foreach($result2 as $row2){
+							$org = $row2['ID'];
+						}
+					
+					$stmt3=$mysqli->prepare("UPDATE User SET Organisations_ID=? WHERE ID=?");
+					$stmt3->bind_param("ii", $org, $user);
+					
+					$user = $row['ID'];
+					$stmt->execute();
+					$stmt3->execute();
+				}
 			}
 		}
 	}
@@ -196,6 +221,19 @@ foreach($result as $row){
 
 			}
 		}
+		echo "<br>";
+			$stmt = $mysqli->prepare("SELECT username FROM User WHERE ID=?");
+			$stmt->bind_param("i", $OID);
+			$stmt->execute();
+			$result2 = $stmt->get_result();
+			foreach($result2 as $row2){
+				echo "<p class='org'>Sie wurden zur Organisation <i class='italic'>".$row2['username']."</i> hinzugefügt.</p>";
+				echo "<p> Aus der Organisation austreten?</p>";
+				echo "	<form name='form' action='index.php?n=4' method='post'>
+						<input type='submit' value='Austreten!'>
+						</form>";
+			}
+		
 	}
 	
 	$org = $row['Organisation'];
