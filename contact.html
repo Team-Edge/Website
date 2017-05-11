@@ -20,11 +20,11 @@ $mail->Username = 'TeamEdgeNF@gmail.com';
 $mail->Password = 'TeamEdgePW';
 
 
-include("../../zugriffWE.php");
+include("../../zugriff.php");
 if ($mysqli->connect_error) {
 $message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 }
-$stmt=$mysqli->prepare("SELECT * FROM Benutzer WHERE ID=?");
+$stmt=$mysqli->prepare("SELECT * FROM User WHERE ID=?");
 $stmt->bind_param('i',$uID);
 
 
@@ -36,9 +36,9 @@ foreach($result as $row){
 //Für Umlaute
 $mail->CharSet = 'utf-8'; 
 //Set who the message is to be sent from
-$mail->setFrom($row['Mail'], $row['Name']);
+$mail->setFrom($row['mail'], $row['username']);
 //Set an alternative reply-to address
-$mail->addReplyTo($row['Mail'], $row['Name']);
+$mail->addReplyTo($row['mail'], $row['username']);
 
 }
 

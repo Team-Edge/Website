@@ -97,6 +97,7 @@ if(isset($_SESSION['login'])){
 					$userid = $_SESSION['user']['ID'];
 					
 					$twitter0 = strip_tags($_POST['f']['twitter0']);
+					
 					if($twitter0 != ""){
 						$url = "https://twitrss.me/twitter_user_to_rss/?user=".$twitter0;
 						$stmt=$mysqli->prepare("INSERT INTO SourceFeed (URL, Title, TTL, User_ID, Filter_ID) VALUES (?, ?, 120, ?, ?)");
@@ -586,7 +587,7 @@ if(isset($_SESSION['login'])){
 		$stmt->execute();
 		$result=$stmt->get_result();
 		foreach($result as $row){
-		echo "<form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&n=1' method='post'>";
+		echo "<form name='Form' action='index.php?click=settings2&profile=".$_GET['profile']."&n=1' method='post' id='anleg'>";
 		echo "<h1>Einstellungen für Ihr Profil ".$row['Name'].":</h1>";
 		}
 		
@@ -660,6 +661,7 @@ if(isset($_SESSION['login'])){
 			echo '</td>';
 			echo "	<td valign='middle' align='center' class='middle'>
 						<button type='button' id='b".$row['ID']."' onclick=deleteFilter(".$row['ID'].")>Löschen</buttton>
+						<button type='button' id='e".$row['ID']."' onclick=editFilter(".$row['ID'].")>Bearbeiten</buttton>
 					</td>";
 			echo '</tr>';
 		}
@@ -696,7 +698,195 @@ function deleteFilter(id){
                 }
      });
 	 
-	 setTimeout(refresh, 100);
+	 setTimeout(refresh, 500);
+}
+
+var filter = 0;
+
+function editFilter(id){
+	filter = id;
+	document.getElementById("filtertext").innerHTML = "Filter bearbeiten: ";
+	document.getElementById("abbruch").removeAttribute("style");
+	document.getElementById("actual").removeAttribute("style");
+	document.getElementById("anlegen").style.display = "none";
+	
+	// get Keywords
+	$.ajax({
+		url: "editFilterKey.php",
+		data: {Filterid: id,},
+		datatype: "json",
+		type: "POST",
+		success: function(data) { responseKey(data); }
+	});
+	
+	// get searchtype
+	$.ajax({
+		url: "getSearch.php",
+		data: {Filterid: id,},
+		datatype: "json",
+		type: "POST",
+		success: function(data) { searchType(data); }
+	});
+	
+	// get SourceFeeds
+	$.ajax({
+		url: "getSource.php",
+		data: {Filterid: id,},
+		datatype: "json",
+		type: "POST",
+		success: function(data) { sourceFeed(data); }
+	});
+	
+	//get Twitter
+	$.ajax({
+		url: "editTwitter.php",
+		data: {Filterid: id,},
+		datatype: "json",
+		type: "POST",
+		success: function(data) { editTwitter(data); }
+	});
+	
+	//get Facebook
+	$.ajax({
+		url: "editFB.php",
+		data: {Filterid: id,},
+		datatype: "json",
+		type: "POST",
+		success: function(data) { editFB(data); }
+	});
+}
+
+function responseKey(data) {
+   // Antwort des Server ggf. verarbeiten
+	var word = "word";
+	var sb = "sb";
+
+	for(var i2=0; i2<10; i2++){
+		id = word + i2;
+		var textfeld = document.getElementById(id);
+		textfeld.innerHTML = "";
+		textfeld.style.display = "none";
+		
+		id = sb + i2;
+		var button = document.getElementById(id);
+		button.innerHTML = "";
+		button.style.display = "none";
+	}
+   
+   var response = $.parseJSON(data);
+   var arraysize = response.length;
+   i = response.length;
+   for(var key=0; key<arraysize; key++){
+		var id = "word" + key;
+		var textfeld = document.getElementById(id);
+		textfeld.value = response[key];
+		textfeld.removeAttribute('style');
+		
+		var button = "sb" + key;
+		var but = document.getElementById(button);
+		but.removeAttribute('style');
+		but.innerHTML = "Entfernen";
+   }
+}
+
+function searchType(data){
+	var response = $.parseJSON(data);
+	var searchtype = response[0];
+	var inv = response[1];
+	var id="";
+	
+	if(searchtype==2) id="vt";
+	if(searchtype==1) id="bs";
+	if(searchtype==0) id="ti";
+	
+	radiobtn = document.getElementById(id);
+	radiobtn.checked = true;
+	
+	if(inv==1) id="yes";
+	if(inv==0) id="no";
+	
+	radiobtn = document.getElementById(id);
+	radiobtn.checked = true;
+}
+
+function sourceFeed(data){
+	var response = $.parseJSON(data);
+	
+	for(var z=0; z<30; z++){
+		var checkbox = document.getElementById(z);
+		if(checkbox != null) checkbox.checked = false;
+	}
+	
+	for(var z=0; z < response.length; z++){
+		var checkbox = document.getElementById(response[z]);
+		if(checkbox != null) checkbox.checked = true;
+	}
+}
+
+function editTwitter(data){
+	
+	var word = "twitter";
+	var tb = "tb";
+
+	for(var j2=0; j2<10; j2++){
+		id = word + j2;
+		var textfeld = document.getElementById(id);
+		textfeld.innerHTML = "";
+		textfeld.style.display = "none";
+		
+		id = tb + j2;
+		var button = document.getElementById(id);
+		button.innerHTML = "";
+		button.style.display = "none";
+	}
+   
+   var response = $.parseJSON(data);
+   var arraysize = response.length;
+   j = response.length;
+   for(var key=0; key<arraysize; key++){
+		var id = word + key;
+		var textfeld = document.getElementById(id);
+		textfeld.value = response[key];
+		textfeld.removeAttribute('style');
+		
+		var button = tb + key;
+		var but = document.getElementById(button);
+		but.removeAttribute('style');
+		but.innerHTML = "Entfernen";
+   }
+}
+
+function editFB(data){
+	
+	var word = "fab";
+	var fb = "fb";
+
+	for(var k2=0; k2<10; k2++){
+		id = word + k2;
+		var textfeld = document.getElementById(id);
+		textfeld.innerHTML = "";
+		textfeld.style.display = "none";
+		
+		id = fb + k2;
+		var button = document.getElementById(id);
+		button.innerHTML = "";
+		button.style.display = "none";
+	}
+   
+   var response = $.parseJSON(data);
+   var arraysize = response.length;
+   k = response.length;
+   for(var key=0; key<arraysize; key++){
+		var id = word + key;
+		var textfeld = document.getElementById(id);
+		textfeld.value = response[key];
+		textfeld.removeAttribute('style');
+		
+		var button = fb + key;
+		var but = document.getElementById(button);
+		but.removeAttribute('style');
+		but.innerHTML = "Entfernen";
+   }
 }
 
 function refresh(){
@@ -737,7 +927,7 @@ function InfoBoxAnzeigen(e,Inhalte,offsetX,offsetY)
 </script>
 
 
-<h2 style="margin-top: 20px" >Neuen Filter erstellen: </h2>
+<h2 style="margin-top: 20px" id="filtertext">Neuen Filter erstellen: </h2>
 
 
 <div class=newW>
@@ -746,16 +936,16 @@ function InfoBoxAnzeigen(e,Inhalte,offsetX,offsetY)
 		<input type='text' name='f[such]' id='such'>
 		<button type='button' name='such' onclick="add()">Hinzufügen</button>
 <p>Hinzugefügte Suchwörter: </p>
-<input type="text" id='word0' name='f[word0]' class="element" style="display:none" readonly><button type="button" name="sb0" onclick="remove('sb0')" style="display:none" id="sb0"></button><br>
-<input type="text" id='word1' name='f[word1]' class="element" style="display:none" readonly><button type="button" name="sb1" onclick="remove('sb1')" style="display:none" id="sb1"></button><br>
-<input type="text" id='word2' name='f[word2]' class="element" style="display:none" readonly><button type="button" name="sb2" onclick="remove('sb2')" style="display:none" id="sb2"></button><br>
-<input type="text" id='word3' name='f[word3]' class="element" style="display:none" readonly><button type="button" name="sb3" onclick="remove('sb3')" style="display:none" id="sb3"></button><br>
-<input type="text" id='word4' name='f[word4]' class="element" style="display:none" readonly><button type="button" name="sb4" onclick="remove('sb4')" style="display:none" id="sb4"></button><br>
-<input type="text" id='word5' name='f[word5]' class="element" style="display:none" readonly><button type="button" name="sb5" onclick="remove('sb5')" style="display:none" id="sb5"></button><br>
-<input type="text" id='word6' name='f[word6]' class="element" style="display:none" readonly><button type="button" name="sb6" onclick="remove('sb6')" style="display:none" id="sb6"></button><br>
-<input type="text" id='word7' name='f[word7]' class="element" style="display:none" readonly><button type="button" name="sb7" onclick="remove('sb7')" style="display:none" id="sb7"></button><br>
-<input type="text" id='word8' name='f[word8]' class="element" style="display:none" readonly><button type="button" name="sb8" onclick="remove('sb8')" style="display:none" id="sb8"></button><br>
-<input type="text" id='word9' name='f[word9]' class="element" style="display:none" readonly><button type="button" name="sb9" onclick="remove('sb9')" style="display:none" id="sb9"></button><br>
+<input type="text" id='word0' name='f[word0]' class="element" style="display:none"><button type="button" name="sb0" onclick="remove('sb0')" style="display:none" id="sb0"></button><br>
+<input type="text" id='word1' name='f[word1]' class="element" style="display:none"><button type="button" name="sb1" onclick="remove('sb1')" style="display:none" id="sb1"></button><br>
+<input type="text" id='word2' name='f[word2]' class="element" style="display:none"><button type="button" name="sb2" onclick="remove('sb2')" style="display:none" id="sb2"></button><br>
+<input type="text" id='word3' name='f[word3]' class="element" style="display:none"><button type="button" name="sb3" onclick="remove('sb3')" style="display:none" id="sb3"></button><br>
+<input type="text" id='word4' name='f[word4]' class="element" style="display:none"><button type="button" name="sb4" onclick="remove('sb4')" style="display:none" id="sb4"></button><br>
+<input type="text" id='word5' name='f[word5]' class="element" style="display:none"><button type="button" name="sb5" onclick="remove('sb5')" style="display:none" id="sb5"></button><br>
+<input type="text" id='word6' name='f[word6]' class="element" style="display:none"><button type="button" name="sb6" onclick="remove('sb6')" style="display:none" id="sb6"></button><br>
+<input type="text" id='word7' name='f[word7]' class="element" style="display:none"><button type="button" name="sb7" onclick="remove('sb7')" style="display:none" id="sb7"></button><br>
+<input type="text" id='word8' name='f[word8]' class="element" style="display:none"><button type="button" name="sb8" onclick="remove('sb8')" style="display:none" id="sb8"></button><br>
+<input type="text" id='word9' name='f[word9]' class="element" style="display:none"><button type="button" name="sb9" onclick="remove('sb9')" style="display:none" id="sb9"></button><br>
 
 	</div>
 </div>		
@@ -894,16 +1084,16 @@ Hilfe
 					
 				
 				<p>Hinzugefügte Twitteraccounts: </p>
-<input type="text" id='twitter0' name='f[twitter0]' class="element" style="display:none" readonly><button type="button" name="tb0" onclick="removet('tb0')" style="display:none" id="tb0"></button><br>
-<input type="text" id='twitter1' name='f[twitter1]' class="element" style="display:none" readonly><button type="button" name="tb1" onclick="removet('tb1')" style="display:none" id="tb1"></button><br>
-<input type="text" id='twitter2' name='f[twitter2]' class="element" style="display:none" readonly><button type="button" name="tb2" onclick="removet('tb2')" style="display:none" id="tb2"></button><br>
-<input type="text" id='twitter3' name='f[twitter3]' class="element" style="display:none" readonly><button type="button" name="tb3" onclick="removet('tb3')" style="display:none" id="tb3"></button><br>
-<input type="text" id='twitter4' name='f[twitter4]' class="element" style="display:none" readonly><button type="button" name="tb4" onclick="removet('tb4')" style="display:none" id="tb4"></button><br>
-<input type="text" id='twitter5' name='f[twitter5]' class="element" style="display:none" readonly><button type="button" name="tb5" onclick="removet('tb5')" style="display:none" id="tb5"></button><br>
-<input type="text" id='twitter6' name='f[twitter6]' class="element" style="display:none" readonly><button type="button" name="tb6" onclick="removet('tb6')" style="display:none" id="tb6"></button><br>
-<input type="text" id='twitter7' name='f[twitter7]' class="element" style="display:none" readonly><button type="button" name="tb7" onclick="removet('tb7')" style="display:none" id="tb7"></button><br>
-<input type="text" id='twitter8' name='f[twitter8]' class="element" style="display:none" readonly><button type="button" name="tb8" onclick="removet('tb8')" style="display:none" id="tb8"></button><br>
-<input type="text" id='twitter9' name='f[twitter9]' class="element" style="display:none" readonly><button type="button" name="tb9" onclick="removet('tb9')" style="display:none" id="tb9"></button><br>
+<input type="text" id='twitter0' name='f[twitter0]' class="element" style="display:none"><button type="button" name="tb0" onclick="removet('tb0')" style="display:none" id="tb0"></button><br>
+<input type="text" id='twitter1' name='f[twitter1]' class="element" style="display:none"><button type="button" name="tb1" onclick="removet('tb1')" style="display:none" id="tb1"></button><br>
+<input type="text" id='twitter2' name='f[twitter2]' class="element" style="display:none"><button type="button" name="tb2" onclick="removet('tb2')" style="display:none" id="tb2"></button><br>
+<input type="text" id='twitter3' name='f[twitter3]' class="element" style="display:none"><button type="button" name="tb3" onclick="removet('tb3')" style="display:none" id="tb3"></button><br>
+<input type="text" id='twitter4' name='f[twitter4]' class="element" style="display:none"><button type="button" name="tb4" onclick="removet('tb4')" style="display:none" id="tb4"></button><br>
+<input type="text" id='twitter5' name='f[twitter5]' class="element" style="display:none"><button type="button" name="tb5" onclick="removet('tb5')" style="display:none" id="tb5"></button><br>
+<input type="text" id='twitter6' name='f[twitter6]' class="element" style="display:none"><button type="button" name="tb6" onclick="removet('tb6')" style="display:none" id="tb6"></button><br>
+<input type="text" id='twitter7' name='f[twitter7]' class="element" style="display:none"><button type="button" name="tb7" onclick="removet('tb7')" style="display:none" id="tb7"></button><br>
+<input type="text" id='twitter8' name='f[twitter8]' class="element" style="display:none"><button type="button" name="tb8" onclick="removet('tb8')" style="display:none" id="tb8"></button><br>
+<input type="text" id='twitter9' name='f[twitter9]' class="element" style="display:none"><button type="button" name="tb9" onclick="removet('tb9')" style="display:none" id="tb9"></button><br>
 
 	</div>
 </div>	
@@ -979,7 +1169,7 @@ function removet(id){
 	j--;
 	var id2 = twitter+number;
 	var textfeld = document.getElementById(id2);
-	textfeld.innerHTML = "";
+	textfeld.value = "";
 	textfeld.style.display = "none";
 	id2 = tb+number;
 	var button = document.getElementById(id2);
@@ -1005,16 +1195,16 @@ Hilfe
 					
 					
 				<p>Hinzugefügte Facebook-URL's: </p>
-<input type="text" id='fab0' name='f[fab0]' class="elementf" style="display:none" readonly><button type="button" name="fb0" onclick="removef('fb0')" style="display:none" id="fb0"></button><br>
-<input type="text" id='fab1' name='f[fab1]' class="elementf" style="display:none" readonly><button type="button" name="fb1" onclick="removef('fb1')" style="display:none" id="fb1"></button><br>
-<input type="text" id='fab2' name='f[fab2]' class="elementf" style="display:none" readonly><button type="button" name="fb2" onclick="removef('fb2')" style="display:none" id="fb2"></button><br>
-<input type="text" id='fab3' name='f[fab3]' class="elementf" style="display:none" readonly><button type="button" name="fb3" onclick="removef('fb3')" style="display:none" id="fb3"></button><br>
-<input type="text" id='fab4' name='f[fab4]' class="elementf" style="display:none" readonly><button type="button" name="fb4" onclick="removef('fb4')" style="display:none" id="fb4"></button><br>
-<input type="text" id='fab5' name='f[fab5]' class="elementf" style="display:none" readonly><button type="button" name="fb5" onclick="removef('fb5')" style="display:none" id="fb5"></button><br>
-<input type="text" id='fab6' name='f[fab6]' class="elementf" style="display:none" readonly><button type="button" name="fb6" onclick="removef('fb6')" style="display:none" id="fb6"></button><br>
-<input type="text" id='fab7' name='f[fab7]' class="elementf" style="display:none" readonly><button type="button" name="fb7" onclick="removef('fb7')" style="display:none" id="fb7"></button><br>
-<input type="text" id='fab8' name='f[fab8]' class="elementf" style="display:none" readonly><button type="button" name="fb8" onclick="removef('fb8')" style="display:none" id="fb8"></button><br>
-<input type="text" id='fab9' name='f[fab9]' class="elementf" style="display:none" readonly><button type="button" name="fb9" onclick="removef('fb9')" style="display:none" id="fb9"></button><br>	
+<input type="text" id='fab0' name='f[fab0]' class="elementf" style="display:none"><button type="button" name="fb0" onclick="removef('fb0')" style="display:none" id="fb0"></button><br>
+<input type="text" id='fab1' name='f[fab1]' class="elementf" style="display:none"><button type="button" name="fb1" onclick="removef('fb1')" style="display:none" id="fb1"></button><br>
+<input type="text" id='fab2' name='f[fab2]' class="elementf" style="display:none"><button type="button" name="fb2" onclick="removef('fb2')" style="display:none" id="fb2"></button><br>
+<input type="text" id='fab3' name='f[fab3]' class="elementf" style="display:none"><button type="button" name="fb3" onclick="removef('fb3')" style="display:none" id="fb3"></button><br>
+<input type="text" id='fab4' name='f[fab4]' class="elementf" style="display:none"><button type="button" name="fb4" onclick="removef('fb4')" style="display:none" id="fb4"></button><br>
+<input type="text" id='fab5' name='f[fab5]' class="elementf" style="display:none"><button type="button" name="fb5" onclick="removef('fb5')" style="display:none" id="fb5"></button><br>
+<input type="text" id='fab6' name='f[fab6]' class="elementf" style="display:none"><button type="button" name="fb6" onclick="removef('fb6')" style="display:none" id="fb6"></button><br>
+<input type="text" id='fab7' name='f[fab7]' class="elementf" style="display:none"><button type="button" name="fb7" onclick="removef('fb7')" style="display:none" id="fb7"></button><br>
+<input type="text" id='fab8' name='f[fab8]' class="elementf" style="display:none"><button type="button" name="fb8" onclick="removef('fb8')" style="display:none" id="fb8"></button><br>
+<input type="text" id='fab9' name='f[fab9]' class="elementf" style="display:none"><button type="button" name="fb9" onclick="removef('fb9')" style="display:none" id="fb9"></button><br>	
 					
 					</div>
 				</div>				
@@ -1076,7 +1266,7 @@ function removef(id){
 	k--;
 	var id2 = fab+number;
 	var textfeld = document.getElementById(id2);
-	textfeld.innerHTML = "";
+	textfeld.value = "";
 	textfeld.style.display = "none";
 	id2 = fb+number;
 	var button = document.getElementById(id2);
@@ -1087,7 +1277,33 @@ function removef(id){
 }
 </script>
 
-<input type='submit' name='submit' value='Filter anlegen' />
+<input type='submit' name='btnsubmit' value='Filter anlegen' id="anlegen"/>
+
+<button type='button' onclick=actualize() style="display:none" id='actual'>Änderungen übernehmen</button>
+<button type='button' onclick=refresh() style="display:none" id='abbruch'>Ändern abbrechen</button>
 </form>
 
+<script>
 
+function actualize(){
+	//alten Filter löschen
+	$.ajax({
+                url: 'deleteFilter.php', // point to server-side PHP script 
+                dataType: 'text',  // what to expect back from the PHP script, if anything
+                cache: false,
+                contentType: false,
+                processData: true,
+                data: {'text': filter}, 				
+                type: 'GET',
+                success: function(php_script_response){
+                    console.log(php_script_response); // display response from the PHP script, if any
+                }
+     });
+	
+	refresh();
+	
+	//neuen Filter anlegen
+	document.Form.submit();
+}
+
+</script>

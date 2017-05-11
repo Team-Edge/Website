@@ -11,6 +11,10 @@ body
         color:#202020;
 }
 
+a.uoh:hover{
+	text-decoration:underline;
+}
+
 input
 {
         font-family: 'Open Sans', sans-serif;
@@ -416,9 +420,10 @@ profiles ul li
 		outline:0;
 		border:1px solid black;
 		border-radius:0px 10px 0px 10px;
-		margin-bottom:20px;
+		margin:0 0 20 0;
 		color:black;
 		box-shadow: 10px 10px 5px grey;
+		
 }
 
 profiles ul #lidel
@@ -464,6 +469,17 @@ profiles #del2{
 profiles pp{
 	position:absolute;
 	top:8px;
+}
+profiles ppp{
+	position:absolute;
+	top:25px;
+}
+profiles input[type=checkbox]{
+	width:20px;
+	height:20px;
+}
+profiles ul li.extended{
+	height:50px;
 }
 
 #art{

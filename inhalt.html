@@ -1,7 +1,24 @@
 
+<script type='text/javascript'>
+function newsletter(p){
+$.ajax({
+           type: "POST",
+           url: 'newscheck.php',
+		   dataType:'text',
+           data:{text:p,checked:document.getElementById("mailer"+p).checked},
+		   
+           
+})}
+
+
+
+
+
+</script>
+
 <?php
 if(isset($_SESSION['login'])){
-echo "<h1>Willkommen ".$_SESSION['user']['username']."!</h1><h2>Ihre Newsfeed Profile:</h2>";
+echo "<h1>Willkommen ".$_SESSION['user']['username']."!</h1><h2>Ihre persönlichen Profile:</h2>";
 
 
 include("../../zugriff.php");
@@ -113,7 +130,7 @@ if($_GET['n']=='3'){
 if($_GET['n']=='2'){
 include("../../zugriff.php");
 
-$stmt=$mysqli->prepare("Insert INTO CustomFeed values('',(SELECT ID FROM User WHERE username=?), ?)");
+$stmt=$mysqli->prepare("Insert INTO CustomFeed values('',(SELECT ID FROM User WHERE username=?), ?,0)");
 $stmt->bind_param('ss',$uname,$pname);
 
 
@@ -134,7 +151,7 @@ header("Location: index.php?click=settings2&profile=".$row['ID']);
 }
 }
 
-$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name FROM `CustomFeed`, `User` WHERE (CustomFeed.`User_ID`=User.`ID` AND User.ID=?)");
+$stmt=$mysqli->prepare("SELECT CustomFeed.ID, Name, Newsletter FROM `CustomFeed`, `User` WHERE (CustomFeed.`User_ID`=User.`ID` AND User.ID=?)");
 $stmt->bind_param('s',$uname);
 
 
@@ -150,10 +167,14 @@ echo "
 foreach ($result as $row){
 $SQL2="SELECT count(*) as cnt FROM CustomFeedEntry, Filter WHERE Filter.ID=CustomFeedEntry.Filter_ID AND Filter.CustomFeed_ID=".$row['ID'];
 foreach($mysqli->query($SQL2) as $cnt){
-echo "<div style=position:relative;><a href='index.php?click=settings2&profile=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=30px height=30px></a>
+echo "<div style=position:relative;><a href='index.php?click=settings2&profile=".$row['ID']."'><img id='set' src='settings.png' alt='Settings' width=55px height=55px></a>
 <a href='index.php?click=articles&profile=".$row['ID']."'>
-<li>
-<div style=position:relative><pp>".$row['Name']." (".$cnt['cnt'].")</pp></div></li></a>";
+<li class='extended'>
+<div style=position:relative><pp>".$row['Name']." (".$cnt['cnt'].")</pp><ppp><label>Newsletter für dieses Profil</label><input type='checkbox' id='mailer".$row['ID']."' onclick=newsletter(".$row['ID'].") ";
+if($row['Newsletter']==0){
+echo "checked";
+}
+echo"></ppp></div></li></a>";
 
 if(isset($_GET['del']) && $_GET['del']==$row['ID']){
 
@@ -227,8 +248,7 @@ foreach($result as $row){
 			$stmt->execute();
 			$result2 = $stmt->get_result();
 			foreach($result2 as $row2){
-				echo "<p class='org'>Sie wurden zur Organisation <i class='italic'>".$row2['username']."</i> hinzugefügt.</p>";
-				echo "<p> Aus der Organisation austreten?</p>";
+				echo "<p class='org'>Ihre Organisation: <i class='italic'>".$row2['username']."</i></p>";
 				echo "	<form name='form' action='index.php?n=4' method='post'>
 						<input type='submit' value='Austreten!'>
 						</form>";

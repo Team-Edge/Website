@@ -6,5 +6,9 @@
 	}
 	$stmt="DELETE FROM Filter WHERE ID=".$filterID;
 	$mysqli->query($stmt);
+	$stmt="DELETE FROM FilterURL WHERE Filter_ID=".$filterID;
+	$mysqli->query($stmt);
+	$stmt="DELETE FROM SourceFeed WHERE Filter_ID =".$filterID;
+	$mysqli->query($stmt);
 	$mysqli->close();
 ?>
