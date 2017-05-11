@@ -175,7 +175,7 @@ Tessa Haschtschek<br>Severin Neuner<br>Kevin Mangold<br>Florian Schmidt<br>Nicho
 </article>
 <article class="column midlist">
 <h4>Informationen</h4>
-<a href='index.php?click=contact'>Zum Kontaktformular</a><br><a href='index.php?click=impressum'>Zum Impressum</a>
+<a class='uoh' href='index.php?click=contact'>Zum Kontaktformular</a><br><a class='uoh' href='index.php?click=impressum'>Zum Impressum</a>
 </article>
 <article class="column rightlist">
 <h4>Haftung</h4>

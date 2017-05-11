@@ -23,7 +23,8 @@ input
         outline:0 ;
         border:1;
         width:250px;
-        background: #E9E4D6;
+        background: white;
+        background: white;
         border-radius:5px;
 }
 
@@ -366,7 +367,7 @@ nav ul li:hover
 }
 
 .Acc{
-	margin-bottom:30px;
+	margin-bottom:15px;
 }
 .Acc td{
 	
@@ -382,10 +383,11 @@ th{
 .Filter{
 	margin-right: 50px;
 	border: 1px solid black;
-	min-width: 200px;
+	min-width: 150px;
 	max-width: 350px;
 	font-size: 18px;
-	padding-bottom: 15px;
+	padding: 15px;
+	border:dotted grey 2px;
 }
 
 .middle{
@@ -397,6 +399,7 @@ th{
 	padding-bottom: 15px;
 	text-align: center;
 	valign: middle;
+	border:dotted grey 2px;
 }
 
 profiles
@@ -452,7 +455,7 @@ profiles #set{
 }
 profiles #del{
 	position:absolute;
-	left:390px;
+	left:375px;
 	top:4px;
 }
 profiles #del2{
@@ -767,6 +770,8 @@ details li:hover + .additional{
         border-radius:5px;
         box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
 		margin-right:10px;
+		display:inline-block;
+		margin:10px;
 }
 
 .button:hover
@@ -1144,7 +1149,7 @@ footer .wrapper .column h4
 			width:300px;
 		}
 		profiles #del{
-			left:290px;
+			left:275px;
 		}
 		
 		 footer .wrapper

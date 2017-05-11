@@ -47,7 +47,9 @@
 			);
 			$mysqli->query($query);
 			if ($mysqli->affected_rows == 1) {
-				$message['success'] = 'Neuer Benutzer (' . htmlspecialchars($_POST['f']['username']) . ') wurde angelegt, <a href="index.php?click=login">weiter zur Anmeldung</a>.';
+				$message['success'] = 'Neuer Benutzer ' . htmlspecialchars($_POST['f']['username']) . ' wurde angelegt, <a href="index.php?click=login">weiter zur Anmeldung</a>.
+				
+				';
 				
 			} else {
 				$message['error'] = 'Der Benutzername ist bereits vergeben.';
@@ -63,7 +65,11 @@
 			<p class="error"><legend>Fehler</legend><?php echo $message['error'] ?></p>
 <?php endif;
 	if (isset($message['success'])): ?>
-			<p class="success"><legend>Erfolg</legend><?php echo $message['success'] ?></p>
+			<p class="success"><legend>Erfolg</legend><?php echo $message['success'] ?>
+			<meta http-equiv="Refresh" content="5; URL=index.php?click=login">
+			
+			<p>Sie werden in 5 Sekunden automatisch zur Anmeldeseite weitergeleitet</p>
+			<a class='uoh' href="index.php?click=login">Wenn die automatische Weiterleitung nicht funktioniert, klicken Sie bitte hier</a></p>
 <?php endif;
 	if (isset($message['notice'])): ?>
 			<p class="notice"><legend>Hinweis</legend><?php echo $message['notice'] ?></p>

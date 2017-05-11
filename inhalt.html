@@ -176,14 +176,11 @@ echo "checked";
 }
 echo"></ppp></div></li></a>";
 
-if(isset($_GET['del']) && $_GET['del']==$row['ID']){
 
-echo "<div id='del2'><a href='index.php?delete=".$row['ID']."'>Löschen...</a></div>";
-}else{
 
-echo "<div id='del'><a href='index.php?del=".$row['ID']."'><img src='delete.png' alt='Delete' width=30px height=30px></a></div>";
+echo "<div id='del'><a href='index.php?delete=".$row['ID']."'><img src='delete.png' alt='Delete' width=50px height=50px></a></div>";
 
-}
+
 echo"
 </div>
 ";
