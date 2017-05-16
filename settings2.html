@@ -104,8 +104,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter0, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -127,8 +127,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter1, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -150,8 +150,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter2, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -173,8 +173,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter3, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -196,8 +196,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter4, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -219,8 +219,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter5, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -242,8 +242,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter6, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -265,8 +265,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter7, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -288,8 +288,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter8, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -311,8 +311,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$url, $twitter9, $userid, $row['ID']);
 						$stmt->execute();
 						
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$url, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$url, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row3){
@@ -336,8 +336,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb0, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb0, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb0, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -360,8 +360,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb1, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb1, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb1, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -384,8 +384,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb2, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb2, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb2, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -408,8 +408,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb3, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb3, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb3, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -432,8 +432,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb4, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb4, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb4, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -456,8 +456,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb5, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb5, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb5, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -480,8 +480,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb6, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb6, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb6, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -504,8 +504,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb7, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb7, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb7, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -528,8 +528,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb8, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb8, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb8, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -552,8 +552,8 @@ if(isset($_SESSION['login'])){
 						$stmt->bind_param('ssii',$fb9, $name, $userid, $row['ID']);
 						$stmt->execute();
 
-						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND User_ID=?");
-						$stmt->bind_param('si',$fb9, $userid);
+						$stmt=$mysqli->prepare("SELECT ID FROM SourceFeed WHERE URL=? AND Filter_ID=?");
+						$stmt->bind_param('si',$fb9, $row['ID']);
 						$stmt->execute();
 						$result=$stmt->get_result();
 						foreach($result as $row4){
@@ -892,7 +892,7 @@ function editFB(data){
 function refresh(){
 	var currentLocation = window.location;
 	var link = currentLocation.toString();
-	link = link.substring(0, 62);
+	link = link.substring(0, 63);
 	window.location = link;
 }
 

@@ -4,7 +4,7 @@
 if(isset($_SESSION['login'])){
 	if(isset($_GET['profile'])){
 		echo"<a href='index.php?click=articles&profile=".$_GET['profile']."'><img src='pfeil_links2.png' width='150px' height='150px'></a>";
-		echo"
+		echo"<p>Datum (tt.mm.jjjj)</p> 
 		<form action='index.php?click=archiv&profile=".$_GET['profile']."' method=POST>
 		<input onchange='this.form.submit()' type='date' name='date' id='date'";
 		if(!empty($_POST['date'])){
